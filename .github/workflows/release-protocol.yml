@@ -1,0 +1,49 @@
+name: Release CAN Protocol
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential
+
+      - name: Configure and Build Generator
+        run: |
+          mkdir build
+          cd build
+          cmake ../dbc-can
+          make dbc-can
+
+      - name: Generate Protocol Header
+        run: |
+          # Use the built generator to create the header
+          # Input: dbc/protocol.dbc, Output: current directory
+          ./build/dbc-can "$GITHUB_WORKSPACE/dbc/protocol.dbc" "$GITHUB_WORKSPACE"
+
+      - name: Upload Header as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: UMDLoopCANProtocol.hpp
+          path: UMDLoopCANProtocol.hpp
+
+      - name: Attach Header to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: UMDLoopCANProtocol.hpp
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
