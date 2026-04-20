@@ -47,7 +47,7 @@ BO_ 259 SPECTROSCOPY_BYTE_CCD_STREAM: 8 Vector__XXX
  SG_ byte_frame_id_0 : 0|16@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 258 SPECTROSCOPY_BINARY_CCD_STREAM: 8 Vector__XXX
- SG_ ccd_binary_measurement_0 : 8|48@1+ (1,0) [0|7.20575940379279E+16] "" Vector__XXX
+ SG_ ccd_binary_measurement_0 : 16|48@1+ (1,0) [0|7.20575940379279E+16] "" Vector__XXX
  SG_ byte_frame_id_0 : 0|16@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 17 POWER_PCB_R: 3 Vector__XXX
@@ -72,18 +72,18 @@ BO_ 113 SCIENCE_DC_MOTOR_PCB_R: 5 Vector__XXX
  SG_ req M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ pcb_heartbeat_success m16M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
  SG_ pcb_led_success m17M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
- SG_ dc_motor_position_pos_resp_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_pos_resp_0 m32M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_pos_resp_1 m33M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_pos_resp_1 m33M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_vel_resp_0 m48M : 8|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_velocity_vel_resp_0 m48M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_vel_resp_1 m49M : 8|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_velocity_vel_resp_1 m49M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_state_resp_0 m64M : 8|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_velocity_state_resp_0 m64M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_state_resp_1 m65M : 8|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_velocity_state_resp_1 m65M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_pos_resp_position_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_pos_resp_velocity_0 m32M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_pos_resp_position_1 m33M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_pos_resp_velocity_1 m33M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_vel_resp_position_0 m48M : 8|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_vel_resp_velocity_0 m48M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_vel_resp_position_1 m49M : 8|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_vel_resp_velocity_1 m49M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_state_resp_position_0 m64M : 8|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_state_resp_velocity_0 m64M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_state_resp_position_1 m65M : 8|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_state_resp_velocity_1 m65M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
  SG_ dc_motor_status_0 m80M : 8|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ dc_motor_status_1 m81M : 8|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ dc_motor_maintenance_success_0 m96M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
@@ -165,54 +165,54 @@ BO_ 129 SCIENCE_SERVO_PCB_R: 6 Vector__XXX
  SG_ req M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ pcb_heartbeat_success m16M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
  SG_ pcb_led_success m17M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
- SG_ servo_position_pos_resp_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_pos_resp_0 m32M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_pos_resp_1 m33M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_pos_resp_1 m33M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_pos_resp_2 m34M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_pos_resp_2 m34M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_pos_resp_3 m35M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_pos_resp_3 m35M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_pos_resp_4 m36M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_pos_resp_4 m36M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_pos_resp_5 m37M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_pos_resp_5 m37M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_pos_resp_6 m38M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_pos_resp_6 m38M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_pos_resp_7 m39M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_pos_resp_7 m39M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_vel_resp_0 m48M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_vel_resp_0 m48M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_vel_resp_1 m49M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_vel_resp_1 m49M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_vel_resp_2 m50M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_vel_resp_2 m50M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_vel_resp_3 m51M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_vel_resp_3 m51M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_vel_resp_4 m52M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_vel_resp_4 m52M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_vel_resp_5 m53M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_vel_resp_5 m53M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_vel_resp_6 m54M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_vel_resp_6 m54M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_vel_resp_7 m55M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_vel_resp_7 m55M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_state_resp_0 m64M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_state_resp_0 m64M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_state_resp_1 m65M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_state_resp_1 m65M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_state_resp_2 m66M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_state_resp_2 m66M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_state_resp_3 m67M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_state_resp_3 m67M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_state_resp_4 m68M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_state_resp_4 m68M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_state_resp_5 m69M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_state_resp_5 m69M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_state_resp_6 m70M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_state_resp_6 m70M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_state_resp_7 m71M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_state_resp_7 m71M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_position_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_velocity_0 m32M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_position_1 m33M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_velocity_1 m33M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_position_2 m34M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_velocity_2 m34M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_position_3 m35M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_velocity_3 m35M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_position_4 m36M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_velocity_4 m36M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_position_5 m37M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_velocity_5 m37M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_position_6 m38M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_velocity_6 m38M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_position_7 m39M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_velocity_7 m39M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_position_0 m48M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_velocity_0 m48M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_position_1 m49M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_velocity_1 m49M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_position_2 m50M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_velocity_2 m50M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_position_3 m51M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_velocity_3 m51M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_position_4 m52M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_velocity_4 m52M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_position_5 m53M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_velocity_5 m53M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_position_6 m54M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_velocity_6 m54M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_position_7 m55M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_velocity_7 m55M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_position_0 m64M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_velocity_0 m64M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_position_1 m65M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_velocity_1 m65M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_position_2 m66M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_velocity_2 m66M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_position_3 m67M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_velocity_3 m67M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_position_4 m68M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_velocity_4 m68M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_position_5 m69M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_velocity_5 m69M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_position_6 m70M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_velocity_6 m70M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_position_7 m71M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_velocity_7 m71M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
  SG_ servo_status_0 m80M : 8|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ servo_status_1 m81M : 8|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ servo_status_2 m82M : 8|8@1+ (1,0) [0|255] "" Vector__XXX
@@ -258,7 +258,7 @@ BO_ 144 SCIENCE_STEPPER_PCB_C: 8 Vector__XXX
  SG_ cmd M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ pcb_heartbeat_delay m16M : 8|8@1+ (1,0) [0|0] "sec" Vector__XXX
  SG_ pcb_led_status m17M : 8|1@1+ (1,0) [0|1] "bool" Vector__XXX
- SG_ stepper_rel_pos_target_0 m32M : 8|16@1+ (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_rel_pos_target_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
  SG_ stepper_rel_pos_target_1 m33M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
  SG_ stepper_rel_pos_target_2 m34M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
  SG_ stepper_rel_pos_target_3 m35M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
@@ -299,42 +299,42 @@ BO_ 145 SCIENCE_STEPPER_PCB_R: 5 Vector__XXX
  SG_ req M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ pcb_heartbeat_success m16M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
  SG_ pcb_led_success m17M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
- SG_ stepper_position_pos_resp_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_pos_resp_0 m32M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_pos_resp_1 m33M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_pos_resp_1 m33M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_pos_resp_2 m34M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_pos_resp_2 m34M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_pos_resp_3 m35M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_pos_resp_3 m35M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_pos_resp_4 m36M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_pos_resp_4 m36M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_pos_resp_5 m37M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_pos_resp_5 m37M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_vel_resp_0 m48M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_vel_resp_0 m48M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_vel_resp_1 m49M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_vel_resp_1 m49M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_vel_resp_2 m50M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_vel_resp_2 m50M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_vel_resp_3 m51M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_vel_resp_3 m51M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_vel_resp_4 m52M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_vel_resp_4 m52M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_vel_resp_5 m53M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_vel_resp_5 m53M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_state_resp_0 m64M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_state_resp_0 m64M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_state_resp_1 m65M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_state_resp_1 m65M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_state_resp_2 m66M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_state_resp_2 m66M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_state_resp_3 m67M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_state_resp_3 m67M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_state_resp_4 m68M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_state_resp_4 m68M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ stepper_position_state_resp_5 m69M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ stepper_velocity_state_resp_5 m69M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_pos_resp_position_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_pos_resp_velocity_0 m32M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_pos_resp_position_1 m33M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_pos_resp_velocity_1 m33M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_pos_resp_position_2 m34M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_pos_resp_velocity_2 m34M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_pos_resp_position_3 m35M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_pos_resp_velocity_3 m35M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_pos_resp_position_4 m36M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_pos_resp_velocity_4 m36M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_pos_resp_position_5 m37M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_pos_resp_velocity_5 m37M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_vel_resp_position_0 m48M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_vel_resp_velocity_0 m48M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_vel_resp_position_1 m49M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_vel_resp_velocity_1 m49M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_vel_resp_position_2 m50M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_vel_resp_velocity_2 m50M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_vel_resp_position_3 m51M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_vel_resp_velocity_3 m51M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_vel_resp_position_4 m52M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_vel_resp_velocity_4 m52M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_vel_resp_position_5 m53M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_vel_resp_velocity_5 m53M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_state_resp_position_0 m64M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_state_resp_velocity_0 m64M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_state_resp_position_1 m65M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_state_resp_velocity_1 m65M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_state_resp_position_2 m66M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_state_resp_velocity_2 m66M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_state_resp_position_3 m67M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_state_resp_velocity_3 m67M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_state_resp_position_4 m68M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_state_resp_velocity_4 m68M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ stepper_state_resp_position_5 m69M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ stepper_state_resp_velocity_5 m69M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
  SG_ stepper_status_0 m80M : 8|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ stepper_status_1 m81M : 8|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ stepper_status_2 m82M : 8|8@1+ (1,0) [0|255] "" Vector__XXX
@@ -348,17 +348,17 @@ BO_ 145 SCIENCE_STEPPER_PCB_R: 5 Vector__XXX
  SG_ stepper_maintenance_success_4 m100M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
  SG_ stepper_maintenance_success_5 m101M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
  SG_ stepper_velocity_max_0 m112M : 8|16@1+ (1,0) [0|65535] "deg/s" Vector__XXX
- SG_ step_angle_0 m112M : 24|8@1+ (1,0) [0|255] "deg" Vector__XXX
+ SG_ stepper_step_angle_0 m112M : 24|8@1+ (1,0) [0|255] "deg" Vector__XXX
  SG_ stepper_velocity_max_1 m113M : 8|16@1+ (1,0) [0|65535] "deg/s" Vector__XXX
- SG_ step_angle_1 m113M : 24|8@1+ (1,0) [0|255] "deg" Vector__XXX
+ SG_ stepper_step_angle_1 m113M : 24|8@1+ (1,0) [0|255] "deg" Vector__XXX
  SG_ stepper_velocity_max_2 m114M : 8|16@1+ (1,0) [0|65535] "deg/s" Vector__XXX
- SG_ step_angle_2 m114M : 24|8@1+ (1,0) [0|255] "deg" Vector__XXX
+ SG_ stepper_step_angle_2 m114M : 24|8@1+ (1,0) [0|255] "deg" Vector__XXX
  SG_ stepper_velocity_max_3 m115M : 8|16@1+ (1,0) [0|65535] "deg/s" Vector__XXX
- SG_ step_angle_3 m115M : 24|8@1+ (1,0) [0|255] "deg" Vector__XXX
+ SG_ stepper_step_angle_3 m115M : 24|8@1+ (1,0) [0|255] "deg" Vector__XXX
  SG_ stepper_velocity_max_4 m116M : 8|16@1+ (1,0) [0|65535] "deg/s" Vector__XXX
- SG_ step_angle_4 m116M : 24|8@1+ (1,0) [0|255] "deg" Vector__XXX
+ SG_ stepper_step_angle_4 m116M : 24|8@1+ (1,0) [0|255] "deg" Vector__XXX
  SG_ stepper_velocity_max_5 m117M : 8|16@1+ (1,0) [0|65535] "deg/s" Vector__XXX
- SG_ step_angle_5 m117M : 24|8@1+ (1,0) [0|255] "deg" Vector__XXX
+ SG_ stepper_step_angle_5 m117M : 24|8@1+ (1,0) [0|255] "deg" Vector__XXX
 
 BO_ 256 SPECTROSCOPY_PCB_C: 3 Vector__XXX
  SG_ byte_meas_ccd_req_event_0 m48 : 8|1@1- (1,0) [0|1] "bool" Vector__XXX
@@ -380,16 +380,16 @@ BO_ 257 SPECTROSCOPY_PCB_R: 3 Vector__XXX
 
 BO_ 272 FLUOROMETRY_PCB_C: 5 Vector__XXX
  SG_ diode_req_event_0 m32 : 8|1@1- (1,0) [0|1] "bool" Vector__XXX
- SG_ led_green_command_0 m49 : 16|8@1+ (1,0) [0|255] "uint8" Vector__XXX
- SG_ led_blue_command_0 m49 : 24|8@1+ (1,0) [0|255] "uint8" Vector__XXX
- SG_ led_red_command_0 m49 : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
+ SG_ led_rgb_cmd_green_0 m49 : 16|8@1+ (1,0) [0|255] "uint8" Vector__XXX
+ SG_ led_rgb_cmd_blue_0 m49 : 24|8@1+ (1,0) [0|255] "uint8" Vector__XXX
+ SG_ led_rgb_cmd_red_0 m49 : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
  SG_ led_intensity_command_0 m33 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ cmd M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ pcb_heartbeat_delay m16M : 8|8@1+ (1,0) [0|255] "sec" Vector__XXX
  SG_ pcb_led_status m17M : 8|1@1+ (1,0) [0|1] "bool" Vector__XXX
 
 BO_ 273 FLUOROMETRY_PCB_R: 3 Vector__XXX
- SG_ diode_value_0 m32 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ diode_intensity_0 m32 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ led_rgb_success_0 m49 : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
  SG_ led_intensity_success_0 m33 : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
  SG_ req M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
@@ -397,9 +397,9 @@ BO_ 273 FLUOROMETRY_PCB_R: 3 Vector__XXX
  SG_ pcb_led_success m17M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
 
 BO_ 288 DRIVE_LED_PCB_C: 4 Vector__XXX
- SG_ led_blue_command_0 m48 : 24|8@1+ (1,0) [0|255] "uint8" Vector__XXX
- SG_ led_green_command_0 m48 : 16|8@1+ (1,0) [0|255] "uint8" Vector__XXX
- SG_ led_red_command_0 m48 : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
+ SG_ led_rgb_cmd_blue_0 m48 : 24|8@1+ (1,0) [0|255] "uint8" Vector__XXX
+ SG_ led_rgb_cmd_green_0 m48 : 16|8@1+ (1,0) [0|255] "uint8" Vector__XXX
+ SG_ led_rgb_cmd_red_0 m48 : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
  SG_ led_intensity_command_0 m32 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ cmd M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ pcb_heartbeat_delay m16M : 8|8@1+ (1,0) [0|255] "sec" Vector__XXX
@@ -439,31 +439,31 @@ BO_ 304 BASE_ARM_PCB_C: 4 Vector__XXX
  SG_ servo_position_target_2 m34M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
 
 BO_ 305 BASE_ARM_PCB_R: 8 Vector__XXX
- SG_ servo_position_state_resp_2 m66 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_position_2 m66 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
  SG_ rotary_encoder_velocity_0 m37 : 32|16@1- (1,0) [-32768|32767] "0.01 deg/s" Vector__XXX
  SG_ rotary_encoder_position_0 m37 : 16|16@1- (1,0) [-32768|32767] "0.1 deg" Vector__XXX
  SG_ rotary_encoder_id_0 m37 : 8|8@1- (1,0) [0|255] "" Vector__XXX
  SG_ req M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ pcb_heartbeat_success m16M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
  SG_ pcb_led_success m17M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
- SG_ servo_velocity_pos_resp_0 m32M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_pos_resp_1 m33M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_pos_resp_2 m34M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_vel_resp_0 m48M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_vel_resp_1 m49M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_vel_resp_2 m50M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_state_resp_0 m64M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_state_resp_1 m65M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_state_resp_2 m66M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_pos_resp_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_position_pos_resp_1 m33M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_position_pos_resp_2 m34M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_position_vel_resp_0 m48M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_position_vel_resp_1 m49M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_position_vel_resp_2 m50M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_position_state_resp_0 m64M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_position_state_resp_1 m65M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_position_state_resp_2 m66M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_velocity_0 m32M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_velocity_1 m33M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_velocity_2 m34M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_velocity_0 m48M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_velocity_1 m49M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_velocity_2 m50M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_velocity_0 m64M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_velocity_1 m65M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_velocity_2 m66M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_position_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_position_1 m33M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_position_2 m34M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_position_0 m48M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_position_1 m49M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_position_2 m50M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_position_0 m64M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_position_1 m65M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_position_2 m66M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
  SG_ servo_status_0 m80M : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
  SG_ servo_status_1 m81M : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
  SG_ servo_status_2 m82M : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
@@ -492,15 +492,15 @@ BO_ 320 SWERVE_PCB_C: 4 Vector__XXX
  SG_ servo_spec_req_event_0 m112M : 8|1@1+ (1,0) [0|1] "bool" Vector__XXX
 
 BO_ 321 SWERVE_PCB_R: 8 Vector__XXX
- SG_ servo_velocity_vel_resp_0 m48 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_state_resp_0 m64 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_pos_resp_0 m32 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_vel_resp_0 m48 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_position_state_resp_0 m64 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_velocity_0 m48 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_velocity_0 m64 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_velocity_0 m32 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_position_0 m48 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_position_0 m64 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
  SG_ req M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ pcb_heartbeat_success m16M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
  SG_ pcb_led_success m17M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
- SG_ servo_position_pos_resp_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_position_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
  SG_ servo_status_0 m80M : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
  SG_ servo_maintenance_success_0 m96M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
  SG_ servo_type_0 m112M : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
@@ -552,46 +552,46 @@ BO_ 96 END_EFFECTOR_PCB_C: 3 Vector__XXX
  SG_ rotary_encoder_id_0 m43M : 8|8@1- (1,0) [0|255] "" Vector__XXX
 
 BO_ 97 END_EFFECTOR_PCB_R: 8 Vector__XXX
- SG_ servo_velocity_vel_resp_1 m57 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_vel_resp_0 m56 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_state_resp_1 m73 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_velocity_state_resp_0 m72 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_velocity_1 m57 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_vel_resp_velocity_0 m56 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_velocity_1 m73 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_state_resp_velocity_0 m72 : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
  SG_ servo_type_1 m121 : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
  SG_ servo_type_0 m120 : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
- SG_ servo_position_vel_resp_1 m57 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_position_vel_resp_0 m56 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_position_state_resp_1 m73 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_position_state_resp_0 m72 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_position_1 m57 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_vel_resp_position_0 m56 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_position_1 m73 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_state_resp_position_0 m72 : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
  SG_ rotary_encoder_velocity_0 m43 : 32|16@1- (1,0) [-32768|32767] "0.01 deg/s" Vector__XXX
  SG_ rotary_encoder_position_0 m43 : 16|16@1- (1,0) [-32768|32767] "0.1 deg" Vector__XXX
  SG_ rotary_encoder_id_0 m43 : 8|8@1- (1,0) [0|255] "" Vector__XXX
  SG_ req M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ pcb_heartbeat_success m16M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
  SG_ pcb_led_success m17M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
- SG_ dc_motor_position_pos_resp_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_pos_resp_0 m32M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_pos_resp_1 m33M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_pos_resp_1 m33M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_pos_resp_2 m34M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_pos_resp_2 m34M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_pos_resp_3 m35M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_pos_resp_3 m35M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_vel_resp_0 m48M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_vel_resp_0 m48M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_vel_resp_1 m49M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_vel_resp_1 m49M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_vel_resp_2 m50M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_vel_resp_2 m50M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_vel_resp_3 m51M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_vel_resp_3 m51M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_state_resp_0 m64M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_state_resp_0 m64M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_state_resp_1 m65M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_state_resp_1 m65M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_state_resp_2 m66M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_state_resp_2 m66M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ dc_motor_position_state_resp_3 m67M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ dc_motor_velocity_state_resp_3 m67M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_pos_resp_position_0 m32M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_pos_resp_velocity_0 m32M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_pos_resp_position_1 m33M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_pos_resp_velocity_1 m33M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_pos_resp_position_2 m34M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_pos_resp_velocity_2 m34M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_pos_resp_position_3 m35M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_pos_resp_velocity_3 m35M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_vel_resp_position_0 m48M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_vel_resp_velocity_0 m48M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_vel_resp_position_1 m49M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_vel_resp_velocity_1 m49M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_vel_resp_position_2 m50M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_vel_resp_velocity_2 m50M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_vel_resp_position_3 m51M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_vel_resp_velocity_3 m51M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_state_resp_position_0 m64M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_state_resp_velocity_0 m64M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_state_resp_position_1 m65M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_state_resp_velocity_1 m65M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_state_resp_position_2 m66M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_state_resp_velocity_2 m66M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ dc_motor_state_resp_position_3 m67M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ dc_motor_state_resp_velocity_3 m67M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
  SG_ dc_motor_status_0 m80M : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
  SG_ dc_motor_status_1 m81M : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
  SG_ dc_motor_status_2 m82M : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
@@ -602,10 +602,10 @@ BO_ 97 END_EFFECTOR_PCB_R: 8 Vector__XXX
  SG_ dc_motor_maintenance_success_3 m99M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
  SG_ dc_motor_velocity_max_0 m112M : 8|16@1+ (1,0) [0|65535] "deg/s" Vector__XXX
  SG_ dc_motor_velocity_max_1 m113M : 8|16@1+ (1,0) [0|65535] "deg/s" Vector__XXX
- SG_ servo_position_pos_resp_0 m40M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_pos_resp_0 m40M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
- SG_ servo_position_pos_resp_1 m41M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
- SG_ servo_velocity_pos_resp_1 m41M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_position_0 m40M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_velocity_0 m40M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
+ SG_ servo_pos_resp_position_1 m41M : 8|16@1- (1,0) [-32768|32767] "deg" Vector__XXX
+ SG_ servo_pos_resp_velocity_1 m41M : 24|16@1- (1,0) [-32768|32767] "deg/s" Vector__XXX
  SG_ servo_status_0 m88M : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
  SG_ servo_status_1 m89M : 8|8@1+ (1,0) [0|255] "uint8" Vector__XXX
  SG_ servo_maintenance_success_0 m104M : 8|8@1+ (1,0) [0|1] "bool" Vector__XXX
@@ -640,9 +640,9 @@ kill_main_power = 1                                      	| Send Command";
 CM_ SG_ 113 req "This is used to mux the remaining bytes of 0x081 messages.";
 CM_ SG_ 113 pcb_heartbeat_success "Response serves as confirmation that PCB heartbeat delay worked.";
 CM_ SG_ 113 pcb_led_success "led_success = 0 | Failed to complete command led_success = 1 | Command sent successfully";
-CM_ SG_ 113 dc_motor_position_pos_resp_1 "The absolute position of the DC motor in integer units degrees. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
-CM_ SG_ 113 dc_motor_velocity_state_resp_0 "The relative velocity of the DC motor in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
-CM_ SG_ 113 dc_motor_velocity_state_resp_1 "The relative velocity of the DC motor in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 113 dc_motor_pos_resp_position_1 "The absolute position of the DC motor in integer units degrees. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 113 dc_motor_state_resp_velocity_0 "The relative velocity of the DC motor in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 113 dc_motor_state_resp_velocity_1 "The relative velocity of the DC motor in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
 CM_ SG_ 113 dc_motor_status_0 "dc_motor_status_# = 0 | Undefined dc_motor_status_# = 1 | Idle dc_motor_status_# = 2 | Startup Sequence dc_motor_status_# = 3 | Error (Invalid Request) dc_motor_status_# = 4 | Error (Motor Disarmed) dc_motor_status_# = 5 | Error (Motor Failed) dc_motor_status_# = 6 | ";
 CM_ SG_ 113 dc_motor_maintenance_success_0 "dc_motor_maintenance_success_# = 0 | Failed to complete command dc_motor_maintenance_success_# = 1 | Command sent successfully";
 CM_ SG_ 113 dc_motor_maintenance_success_1 "dc_motor_maintenance_success_# = 0 | Failed to complete command dc_motor_maintenance_success_# = 1 | Command sent successfully";
@@ -685,8 +685,8 @@ CM_ SG_ 128 servo_spec_req_event_5 "servo_spec_req_event_# = 0 | Don’t validat
 CM_ SG_ 129 req "This is used to mux the remaining bytes of 0x081 messages.";
 CM_ SG_ 129 pcb_heartbeat_success "Response serves as confirmation that PCB heartbeat delay worked.";
 CM_ SG_ 129 pcb_led_success "led_success = 0 | Failed to complete command led_success = 1 | Command sent successfully";
-CM_ SG_ 129 servo_position_pos_resp_0 "The absolute position of the servo in integer units degrees. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
-CM_ SG_ 129 servo_velocity_pos_resp_0 "The relative velocity of the servo in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 129 servo_pos_resp_position_0 "The absolute position of the servo in integer units degrees. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 129 servo_pos_resp_velocity_0 "The relative velocity of the servo in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
 CM_ SG_ 129 servo_status_0 "Response will contain the current status of a particular servo.";
 CM_ SG_ 129 servo_status_1 "Response will contain the current status of a particular servo.";
 CM_ SG_ 129 servo_status_2 "Response will contain the current status of a particular servo.";
@@ -732,17 +732,17 @@ CM_ SG_ 144 stepper_maintenance_cmd_5 "motor_id | Identifies which motor we are 
 CM_ SG_ 145 req "This is used to mux the remaining bytes of 0x091 messages.";
 CM_ SG_ 145 pcb_led_success "led_success = 0 | Failed to complete command led_success = 1 | Command sent successfully";
 CM_ SG_ 145 stepper_velocity_max_0 "stepper_velocity_max _# = 0 - 65,535 | Maximum stepper velocity in degrees/sec. | Returns in little endian.";
-CM_ SG_ 145 step_angle_0 "step_angle_# = 0 - 255 | Returns step angle for this particular motor in | degrees. The maximum possible step angle to | input is 25.5. Returns in little endian.";
+CM_ SG_ 145 stepper_step_angle_0 "stepper_step_angle_# = 0 - 255 | Returns step angle for this particular motor in | degrees. The maximum possible step angle to | input is 25.5. Returns in little endian.";
 CM_ SG_ 145 stepper_velocity_max_1 "stepper_velocity_max _# = 0 - 65,535 | Maximum stepper velocity in degrees/sec. | Returns in little endian.";
-CM_ SG_ 145 step_angle_1 "step_angle_# = 0 - 255 | Returns step angle for this particular motor in | degrees. The maximum possible step angle to | input is 25.5. Returns in little endian.";
+CM_ SG_ 145 stepper_step_angle_1 "stepper_step_angle_# = 0 - 255 | Returns step angle for this particular motor in | degrees. The maximum possible step angle to | input is 25.5. Returns in little endian.";
 CM_ SG_ 145 stepper_velocity_max_2 "stepper_velocity_max _# = 0 - 65,535 | Maximum stepper velocity in degrees/sec. | Returns in little endian.";
-CM_ SG_ 145 step_angle_2 "step_angle_# = 0 - 255 | Returns step angle for this particular motor in | degrees. The maximum possible step angle to | input is 25.5. Returns in little endian.";
+CM_ SG_ 145 stepper_step_angle_2 "stepper_step_angle_# = 0 - 255 | Returns step angle for this particular motor in | degrees. The maximum possible step angle to | input is 25.5. Returns in little endian.";
 CM_ SG_ 145 stepper_velocity_max_3 "stepper_velocity_max _# = 0 - 65,535 | Maximum stepper velocity in degrees/sec. | Returns in little endian.";
-CM_ SG_ 145 step_angle_3 "step_angle_# = 0 - 255 | Returns step angle for this particular motor in | degrees. The maximum possible step angle to | input is 25.5. Returns in little endian.";
+CM_ SG_ 145 stepper_step_angle_3 "stepper_step_angle_# = 0 - 255 | Returns step angle for this particular motor in | degrees. The maximum possible step angle to | input is 25.5. Returns in little endian.";
 CM_ SG_ 145 stepper_velocity_max_4 "stepper_velocity_max _# = 0 - 65,535 | Maximum stepper velocity in degrees/sec. | Returns in little endian.";
-CM_ SG_ 145 step_angle_4 "step_angle_# = 0 - 255 | Returns step angle for this particular motor in | degrees. The maximum possible step angle to | input is 25.5. Returns in little endian.";
+CM_ SG_ 145 stepper_step_angle_4 "stepper_step_angle_# = 0 - 255 | Returns step angle for this particular motor in | degrees. The maximum possible step angle to | input is 25.5. Returns in little endian.";
 CM_ SG_ 145 stepper_velocity_max_5 "stepper_velocity_max _# = 0 - 65,535 | Maximum stepper velocity in degrees/sec. | Returns in little endian.";
-CM_ SG_ 145 step_angle_5 "step_angle_# = 0 - 255 | Returns step angle for this particular motor in | degrees. The maximum possible step angle to | input is 25.5. Returns in little endian.";
+CM_ SG_ 145 stepper_step_angle_5 "stepper_step_angle_# = 0 - 255 | Returns step angle for this particular motor in | degrees. The maximum possible step angle to | input is 25.5. Returns in little endian.";
 CM_ SG_ 256 cmd "This is used to mux the remaining bytes of 0x100 messages.";
 CM_ SG_ 272 cmd "This is used to mux the remaining bytes of 0x110 messages.";
 CM_ SG_ 288 cmd "This is used to mux the remaining bytes of 0x120 messages.";
@@ -794,12 +794,12 @@ CM_ SG_ 96 servo_spec_req_event_0 "servo_spec_req_event_# = 0 | Don’t validate
 CM_ SG_ 96 servo_spec_req_event_1 "servo_spec_req_event_# = 0 | Don’t validate the request servo_spec_req_event_# = 1 | Validate the request";
 CM_ SG_ 97 servo_type_1 "servo_type_# = 0 | Undefined servo_type_# = 1 | Standard servo_type_# = 2	| Continuous";
 CM_ SG_ 97 servo_type_0 "servo_type_# = 0 | Undefined servo_type_# = 1 | Standard servo_type_# = 2	| Continuous";
-CM_ SG_ 97 dc_motor_position_pos_resp_0 "The absolute position of the DC motor in integer units degrees. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
-CM_ SG_ 97 dc_motor_velocity_pos_resp_0 "The relative velocity of the DC motor in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
-CM_ SG_ 97 dc_motor_position_pos_resp_1 "The absolute position of the DC motor in integer units degrees. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
-CM_ SG_ 97 dc_motor_velocity_pos_resp_1 "The relative velocity of the DC motor in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
-CM_ SG_ 97 dc_motor_velocity_pos_resp_2 "The relative velocity of the DC motor in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
-CM_ SG_ 97 dc_motor_velocity_pos_resp_3 "The relative velocity of the DC motor in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 97 dc_motor_pos_resp_position_0 "The absolute position of the DC motor in integer units degrees. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 97 dc_motor_pos_resp_velocity_0 "The relative velocity of the DC motor in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 97 dc_motor_pos_resp_position_1 "The absolute position of the DC motor in integer units degrees. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 97 dc_motor_pos_resp_velocity_1 "The relative velocity of the DC motor in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 97 dc_motor_pos_resp_velocity_2 "The relative velocity of the DC motor in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 97 dc_motor_pos_resp_velocity_3 "The relative velocity of the DC motor in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
 CM_ SG_ 97 dc_motor_status_0 "dc_motor_status_# = 0 | Undefined dc_motor_status_# = 1 | Idle dc_motor_status_# = 2 | Startup Sequence dc_motor_status_# = 3 | Error (Invalid Request) dc_motor_status_# = 4 | Error (Motor Disarmed) dc_motor_status_# = 5 | Error (Motor Failed) dc_motor_status_# = 6 | ";
 CM_ SG_ 97 dc_motor_status_1 "dc_motor_status_# = 0 | Undefined dc_motor_status_# = 1 | Idle dc_motor_status_# = 2 | Startup Sequence dc_motor_status_# = 3 | Error (Invalid Request) dc_motor_status_# = 4 | Error (Motor Disarmed) dc_motor_status_# = 5 | Error (Motor Failed) dc_motor_status_# = 6 | ";
 CM_ SG_ 97 dc_motor_maintenance_success_0 "dc_motor_maintenance_success_# = 0 | Failed to complete command dc_motor_maintenance_success_# = 1 | Command sent successfully";
@@ -808,10 +808,10 @@ CM_ SG_ 97 dc_motor_maintenance_success_2 "dc_motor_maintenance_success_# = 0 | 
 CM_ SG_ 97 dc_motor_maintenance_success_3 "dc_motor_maintenance_success_# = 0 | Failed to complete command dc_motor_maintenance_success_# = 1 | Command sent successfully";
 CM_ SG_ 97 dc_motor_velocity_max_0 "dc_motor_velocity_max _# = 0 - 65,535 | Maximum DC motor velocity in degrees/sec. | Returns in little endian.";
 CM_ SG_ 97 dc_motor_velocity_max_1 "dc_motor_velocity_max _# = 0 - 65,535 | Maximum DC motor velocity in degrees/sec. | Returns in little endian.";
-CM_ SG_ 97 servo_position_pos_resp_0 "The absolute position of the servo in integer units degrees. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
-CM_ SG_ 97 servo_velocity_pos_resp_0 "The relative velocity of the servo in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
-CM_ SG_ 97 servo_position_pos_resp_1 "The absolute position of the servo in integer units degrees. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
-CM_ SG_ 97 servo_velocity_pos_resp_1 "The relative velocity of the servo in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 97 servo_pos_resp_position_0 "The absolute position of the servo in integer units degrees. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 97 servo_pos_resp_velocity_0 "The relative velocity of the servo in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 97 servo_pos_resp_position_1 "The absolute position of the servo in integer units degrees. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
+CM_ SG_ 97 servo_pos_resp_velocity_1 "The relative velocity of the servo in integer units degrees per second. Uses typical turn sign convention: counter-clockwise (+) and clockwise (-).";
 CM_ SG_ 97 servo_status_0 "Response will contain the current status of a particular servo.";
 CM_ SG_ 97 servo_status_1 "Response will contain the current status of a particular servo.";
 CM_ SG_ 97 servo_maintenance_success_0 "servo_maintenance_success_# = 0 | Failed to complete command servo_maintenance_success_# = 1 | Command sent successfully";
@@ -981,7 +981,7 @@ VAL_ 257 laser_command_success_0 1 "Command sent successfully" 0 "Failed to comp
 VAL_ 257 laser_status_success_0 1 "Command sent successfully" 0 "Failed to complete command" ;
 VAL_ 272 diode_req_event_0 1 "Validate the request" 0 "Don't validate the request" ;
 VAL_ 272 pcb_led_status 1 "PCB LED will be turned on." 0 "PCB LED will be turned off." ;
-VAL_ 273 diode_value_0 1 "Validate the request" 0 "Don't validate the request" ;
+VAL_ 273 diode_intensity_0 1 "Validate the request" 0 "Don't validate the request" ;
 VAL_ 273 led_rgb_success_0 1 "Command sent successfully" 0 "Failed to complete command" ;
 VAL_ 273 led_intensity_success_0 1 "Command sent successfully" 0 "Failed to complete command" ;
 VAL_ 273 pcb_heartbeat_success 1 "Command sent successfully" 0 "Failed to complete command" ;
@@ -1080,18 +1080,18 @@ SG_MUL_VAL_ 16 kill_main_power cmd 20-20;
 SG_MUL_VAL_ 16 kill_by_voltage_power cmd 21-21;
 SG_MUL_VAL_ 113 pcb_heartbeat_success req 16-16;
 SG_MUL_VAL_ 113 pcb_led_success req 17-17;
-SG_MUL_VAL_ 113 dc_motor_position_pos_resp_0 req 32-32;
-SG_MUL_VAL_ 113 dc_motor_velocity_pos_resp_0 req 32-32;
-SG_MUL_VAL_ 113 dc_motor_position_pos_resp_1 req 33-33;
-SG_MUL_VAL_ 113 dc_motor_velocity_pos_resp_1 req 33-33;
-SG_MUL_VAL_ 113 dc_motor_position_vel_resp_0 req 48-48;
-SG_MUL_VAL_ 113 dc_motor_velocity_vel_resp_0 req 48-48;
-SG_MUL_VAL_ 113 dc_motor_position_vel_resp_1 req 49-49;
-SG_MUL_VAL_ 113 dc_motor_velocity_vel_resp_1 req 49-49;
-SG_MUL_VAL_ 113 dc_motor_position_state_resp_0 req 64-64;
-SG_MUL_VAL_ 113 dc_motor_velocity_state_resp_0 req 64-64;
-SG_MUL_VAL_ 113 dc_motor_position_state_resp_1 req 65-65;
-SG_MUL_VAL_ 113 dc_motor_velocity_state_resp_1 req 65-65;
+SG_MUL_VAL_ 113 dc_motor_pos_resp_position_0 req 32-32;
+SG_MUL_VAL_ 113 dc_motor_pos_resp_velocity_0 req 32-32;
+SG_MUL_VAL_ 113 dc_motor_pos_resp_position_1 req 33-33;
+SG_MUL_VAL_ 113 dc_motor_pos_resp_velocity_1 req 33-33;
+SG_MUL_VAL_ 113 dc_motor_vel_resp_position_0 req 48-48;
+SG_MUL_VAL_ 113 dc_motor_vel_resp_velocity_0 req 48-48;
+SG_MUL_VAL_ 113 dc_motor_vel_resp_position_1 req 49-49;
+SG_MUL_VAL_ 113 dc_motor_vel_resp_velocity_1 req 49-49;
+SG_MUL_VAL_ 113 dc_motor_state_resp_position_0 req 64-64;
+SG_MUL_VAL_ 113 dc_motor_state_resp_velocity_0 req 64-64;
+SG_MUL_VAL_ 113 dc_motor_state_resp_position_1 req 65-65;
+SG_MUL_VAL_ 113 dc_motor_state_resp_velocity_1 req 65-65;
 SG_MUL_VAL_ 113 dc_motor_status_0 req 80-80;
 SG_MUL_VAL_ 113 dc_motor_status_1 req 81-81;
 SG_MUL_VAL_ 113 dc_motor_maintenance_success_0 req 96-96;
@@ -1164,54 +1164,54 @@ SG_MUL_VAL_ 128 servo_spec_req_event_6 cmd 118-118;
 SG_MUL_VAL_ 128 servo_spec_req_event_7 cmd 119-119;
 SG_MUL_VAL_ 129 pcb_heartbeat_success req 16-16;
 SG_MUL_VAL_ 129 pcb_led_success req 17-17;
-SG_MUL_VAL_ 129 servo_position_pos_resp_0 req 32-32;
-SG_MUL_VAL_ 129 servo_velocity_pos_resp_0 req 32-32;
-SG_MUL_VAL_ 129 servo_position_pos_resp_1 req 33-33;
-SG_MUL_VAL_ 129 servo_velocity_pos_resp_1 req 33-33;
-SG_MUL_VAL_ 129 servo_position_pos_resp_2 req 34-34;
-SG_MUL_VAL_ 129 servo_velocity_pos_resp_2 req 34-34;
-SG_MUL_VAL_ 129 servo_position_pos_resp_3 req 35-35;
-SG_MUL_VAL_ 129 servo_velocity_pos_resp_3 req 35-35;
-SG_MUL_VAL_ 129 servo_position_pos_resp_4 req 36-36;
-SG_MUL_VAL_ 129 servo_velocity_pos_resp_4 req 36-36;
-SG_MUL_VAL_ 129 servo_position_pos_resp_5 req 37-37;
-SG_MUL_VAL_ 129 servo_velocity_pos_resp_5 req 37-37;
-SG_MUL_VAL_ 129 servo_position_pos_resp_6 req 38-38;
-SG_MUL_VAL_ 129 servo_velocity_pos_resp_6 req 38-38;
-SG_MUL_VAL_ 129 servo_position_pos_resp_7 req 39-39;
-SG_MUL_VAL_ 129 servo_velocity_pos_resp_7 req 39-39;
-SG_MUL_VAL_ 129 servo_position_vel_resp_0 req 48-48;
-SG_MUL_VAL_ 129 servo_velocity_vel_resp_0 req 48-48;
-SG_MUL_VAL_ 129 servo_position_vel_resp_1 req 49-49;
-SG_MUL_VAL_ 129 servo_velocity_vel_resp_1 req 49-49;
-SG_MUL_VAL_ 129 servo_position_vel_resp_2 req 50-50;
-SG_MUL_VAL_ 129 servo_velocity_vel_resp_2 req 50-50;
-SG_MUL_VAL_ 129 servo_position_vel_resp_3 req 51-51;
-SG_MUL_VAL_ 129 servo_velocity_vel_resp_3 req 51-51;
-SG_MUL_VAL_ 129 servo_position_vel_resp_4 req 52-52;
-SG_MUL_VAL_ 129 servo_velocity_vel_resp_4 req 52-52;
-SG_MUL_VAL_ 129 servo_position_vel_resp_5 req 53-53;
-SG_MUL_VAL_ 129 servo_velocity_vel_resp_5 req 53-53;
-SG_MUL_VAL_ 129 servo_position_vel_resp_6 req 54-54;
-SG_MUL_VAL_ 129 servo_velocity_vel_resp_6 req 54-54;
-SG_MUL_VAL_ 129 servo_position_vel_resp_7 req 55-55;
-SG_MUL_VAL_ 129 servo_velocity_vel_resp_7 req 55-55;
-SG_MUL_VAL_ 129 servo_position_state_resp_0 req 64-64;
-SG_MUL_VAL_ 129 servo_velocity_state_resp_0 req 64-64;
-SG_MUL_VAL_ 129 servo_position_state_resp_1 req 65-65;
-SG_MUL_VAL_ 129 servo_velocity_state_resp_1 req 65-65;
-SG_MUL_VAL_ 129 servo_position_state_resp_2 req 66-66;
-SG_MUL_VAL_ 129 servo_velocity_state_resp_2 req 66-66;
-SG_MUL_VAL_ 129 servo_position_state_resp_3 req 67-67;
-SG_MUL_VAL_ 129 servo_velocity_state_resp_3 req 67-67;
-SG_MUL_VAL_ 129 servo_position_state_resp_4 req 68-68;
-SG_MUL_VAL_ 129 servo_velocity_state_resp_4 req 68-68;
-SG_MUL_VAL_ 129 servo_position_state_resp_5 req 69-69;
-SG_MUL_VAL_ 129 servo_velocity_state_resp_5 req 69-69;
-SG_MUL_VAL_ 129 servo_position_state_resp_6 req 70-70;
-SG_MUL_VAL_ 129 servo_velocity_state_resp_6 req 70-70;
-SG_MUL_VAL_ 129 servo_position_state_resp_7 req 71-71;
-SG_MUL_VAL_ 129 servo_velocity_state_resp_7 req 71-71;
+SG_MUL_VAL_ 129 servo_pos_resp_position_0 req 32-32;
+SG_MUL_VAL_ 129 servo_pos_resp_velocity_0 req 32-32;
+SG_MUL_VAL_ 129 servo_pos_resp_position_1 req 33-33;
+SG_MUL_VAL_ 129 servo_pos_resp_velocity_1 req 33-33;
+SG_MUL_VAL_ 129 servo_pos_resp_position_2 req 34-34;
+SG_MUL_VAL_ 129 servo_pos_resp_velocity_2 req 34-34;
+SG_MUL_VAL_ 129 servo_pos_resp_position_3 req 35-35;
+SG_MUL_VAL_ 129 servo_pos_resp_velocity_3 req 35-35;
+SG_MUL_VAL_ 129 servo_pos_resp_position_4 req 36-36;
+SG_MUL_VAL_ 129 servo_pos_resp_velocity_4 req 36-36;
+SG_MUL_VAL_ 129 servo_pos_resp_position_5 req 37-37;
+SG_MUL_VAL_ 129 servo_pos_resp_velocity_5 req 37-37;
+SG_MUL_VAL_ 129 servo_pos_resp_position_6 req 38-38;
+SG_MUL_VAL_ 129 servo_pos_resp_velocity_6 req 38-38;
+SG_MUL_VAL_ 129 servo_pos_resp_position_7 req 39-39;
+SG_MUL_VAL_ 129 servo_pos_resp_velocity_7 req 39-39;
+SG_MUL_VAL_ 129 servo_vel_resp_position_0 req 48-48;
+SG_MUL_VAL_ 129 servo_vel_resp_velocity_0 req 48-48;
+SG_MUL_VAL_ 129 servo_vel_resp_position_1 req 49-49;
+SG_MUL_VAL_ 129 servo_vel_resp_velocity_1 req 49-49;
+SG_MUL_VAL_ 129 servo_vel_resp_position_2 req 50-50;
+SG_MUL_VAL_ 129 servo_vel_resp_velocity_2 req 50-50;
+SG_MUL_VAL_ 129 servo_vel_resp_position_3 req 51-51;
+SG_MUL_VAL_ 129 servo_vel_resp_velocity_3 req 51-51;
+SG_MUL_VAL_ 129 servo_vel_resp_position_4 req 52-52;
+SG_MUL_VAL_ 129 servo_vel_resp_velocity_4 req 52-52;
+SG_MUL_VAL_ 129 servo_vel_resp_position_5 req 53-53;
+SG_MUL_VAL_ 129 servo_vel_resp_velocity_5 req 53-53;
+SG_MUL_VAL_ 129 servo_vel_resp_position_6 req 54-54;
+SG_MUL_VAL_ 129 servo_vel_resp_velocity_6 req 54-54;
+SG_MUL_VAL_ 129 servo_vel_resp_position_7 req 55-55;
+SG_MUL_VAL_ 129 servo_vel_resp_velocity_7 req 55-55;
+SG_MUL_VAL_ 129 servo_state_resp_position_0 req 64-64;
+SG_MUL_VAL_ 129 servo_state_resp_velocity_0 req 64-64;
+SG_MUL_VAL_ 129 servo_state_resp_position_1 req 65-65;
+SG_MUL_VAL_ 129 servo_state_resp_velocity_1 req 65-65;
+SG_MUL_VAL_ 129 servo_state_resp_position_2 req 66-66;
+SG_MUL_VAL_ 129 servo_state_resp_velocity_2 req 66-66;
+SG_MUL_VAL_ 129 servo_state_resp_position_3 req 67-67;
+SG_MUL_VAL_ 129 servo_state_resp_velocity_3 req 67-67;
+SG_MUL_VAL_ 129 servo_state_resp_position_4 req 68-68;
+SG_MUL_VAL_ 129 servo_state_resp_velocity_4 req 68-68;
+SG_MUL_VAL_ 129 servo_state_resp_position_5 req 69-69;
+SG_MUL_VAL_ 129 servo_state_resp_velocity_5 req 69-69;
+SG_MUL_VAL_ 129 servo_state_resp_position_6 req 70-70;
+SG_MUL_VAL_ 129 servo_state_resp_velocity_6 req 70-70;
+SG_MUL_VAL_ 129 servo_state_resp_position_7 req 71-71;
+SG_MUL_VAL_ 129 servo_state_resp_velocity_7 req 71-71;
 SG_MUL_VAL_ 129 servo_status_0 req 80-80;
 SG_MUL_VAL_ 129 servo_status_1 req 81-81;
 SG_MUL_VAL_ 129 servo_status_2 req 82-82;
@@ -1292,42 +1292,42 @@ SG_MUL_VAL_ 144 stepper_spec_req_event_4 cmd 116-116;
 SG_MUL_VAL_ 144 stepper_spec_req_event_5 cmd 117-117;
 SG_MUL_VAL_ 145 pcb_heartbeat_success req 16-16;
 SG_MUL_VAL_ 145 pcb_led_success req 17-17;
-SG_MUL_VAL_ 145 stepper_position_pos_resp_0 req 32-32;
-SG_MUL_VAL_ 145 stepper_velocity_pos_resp_0 req 32-32;
-SG_MUL_VAL_ 145 stepper_position_pos_resp_1 req 33-33;
-SG_MUL_VAL_ 145 stepper_velocity_pos_resp_1 req 33-33;
-SG_MUL_VAL_ 145 stepper_position_pos_resp_2 req 34-34;
-SG_MUL_VAL_ 145 stepper_velocity_pos_resp_2 req 34-34;
-SG_MUL_VAL_ 145 stepper_position_pos_resp_3 req 35-35;
-SG_MUL_VAL_ 145 stepper_velocity_pos_resp_3 req 35-35;
-SG_MUL_VAL_ 145 stepper_position_pos_resp_4 req 36-36;
-SG_MUL_VAL_ 145 stepper_velocity_pos_resp_4 req 36-36;
-SG_MUL_VAL_ 145 stepper_position_pos_resp_5 req 37-37;
-SG_MUL_VAL_ 145 stepper_velocity_pos_resp_5 req 37-37;
-SG_MUL_VAL_ 145 stepper_position_vel_resp_0 req 48-48;
-SG_MUL_VAL_ 145 stepper_velocity_vel_resp_0 req 48-48;
-SG_MUL_VAL_ 145 stepper_position_vel_resp_1 req 49-49;
-SG_MUL_VAL_ 145 stepper_velocity_vel_resp_1 req 49-49;
-SG_MUL_VAL_ 145 stepper_position_vel_resp_2 req 50-50;
-SG_MUL_VAL_ 145 stepper_velocity_vel_resp_2 req 50-50;
-SG_MUL_VAL_ 145 stepper_position_vel_resp_3 req 51-51;
-SG_MUL_VAL_ 145 stepper_velocity_vel_resp_3 req 51-51;
-SG_MUL_VAL_ 145 stepper_position_vel_resp_4 req 52-52;
-SG_MUL_VAL_ 145 stepper_velocity_vel_resp_4 req 52-52;
-SG_MUL_VAL_ 145 stepper_position_vel_resp_5 req 53-53;
-SG_MUL_VAL_ 145 stepper_velocity_vel_resp_5 req 53-53;
-SG_MUL_VAL_ 145 stepper_position_state_resp_0 req 64-64;
-SG_MUL_VAL_ 145 stepper_velocity_state_resp_0 req 64-64;
-SG_MUL_VAL_ 145 stepper_position_state_resp_1 req 65-65;
-SG_MUL_VAL_ 145 stepper_velocity_state_resp_1 req 65-65;
-SG_MUL_VAL_ 145 stepper_position_state_resp_2 req 66-66;
-SG_MUL_VAL_ 145 stepper_velocity_state_resp_2 req 66-66;
-SG_MUL_VAL_ 145 stepper_position_state_resp_3 req 67-67;
-SG_MUL_VAL_ 145 stepper_velocity_state_resp_3 req 67-67;
-SG_MUL_VAL_ 145 stepper_position_state_resp_4 req 68-68;
-SG_MUL_VAL_ 145 stepper_velocity_state_resp_4 req 68-68;
-SG_MUL_VAL_ 145 stepper_position_state_resp_5 req 69-69;
-SG_MUL_VAL_ 145 stepper_velocity_state_resp_5 req 69-69;
+SG_MUL_VAL_ 145 stepper_pos_resp_position_0 req 32-32;
+SG_MUL_VAL_ 145 stepper_pos_resp_velocity_0 req 32-32;
+SG_MUL_VAL_ 145 stepper_pos_resp_position_1 req 33-33;
+SG_MUL_VAL_ 145 stepper_pos_resp_velocity_1 req 33-33;
+SG_MUL_VAL_ 145 stepper_pos_resp_position_2 req 34-34;
+SG_MUL_VAL_ 145 stepper_pos_resp_velocity_2 req 34-34;
+SG_MUL_VAL_ 145 stepper_pos_resp_position_3 req 35-35;
+SG_MUL_VAL_ 145 stepper_pos_resp_velocity_3 req 35-35;
+SG_MUL_VAL_ 145 stepper_pos_resp_position_4 req 36-36;
+SG_MUL_VAL_ 145 stepper_pos_resp_velocity_4 req 36-36;
+SG_MUL_VAL_ 145 stepper_pos_resp_position_5 req 37-37;
+SG_MUL_VAL_ 145 stepper_pos_resp_velocity_5 req 37-37;
+SG_MUL_VAL_ 145 stepper_vel_resp_position_0 req 48-48;
+SG_MUL_VAL_ 145 stepper_vel_resp_velocity_0 req 48-48;
+SG_MUL_VAL_ 145 stepper_vel_resp_position_1 req 49-49;
+SG_MUL_VAL_ 145 stepper_vel_resp_velocity_1 req 49-49;
+SG_MUL_VAL_ 145 stepper_vel_resp_position_2 req 50-50;
+SG_MUL_VAL_ 145 stepper_vel_resp_velocity_2 req 50-50;
+SG_MUL_VAL_ 145 stepper_vel_resp_position_3 req 51-51;
+SG_MUL_VAL_ 145 stepper_vel_resp_velocity_3 req 51-51;
+SG_MUL_VAL_ 145 stepper_vel_resp_position_4 req 52-52;
+SG_MUL_VAL_ 145 stepper_vel_resp_velocity_4 req 52-52;
+SG_MUL_VAL_ 145 stepper_vel_resp_position_5 req 53-53;
+SG_MUL_VAL_ 145 stepper_vel_resp_velocity_5 req 53-53;
+SG_MUL_VAL_ 145 stepper_state_resp_position_0 req 64-64;
+SG_MUL_VAL_ 145 stepper_state_resp_velocity_0 req 64-64;
+SG_MUL_VAL_ 145 stepper_state_resp_position_1 req 65-65;
+SG_MUL_VAL_ 145 stepper_state_resp_velocity_1 req 65-65;
+SG_MUL_VAL_ 145 stepper_state_resp_position_2 req 66-66;
+SG_MUL_VAL_ 145 stepper_state_resp_velocity_2 req 66-66;
+SG_MUL_VAL_ 145 stepper_state_resp_position_3 req 67-67;
+SG_MUL_VAL_ 145 stepper_state_resp_velocity_3 req 67-67;
+SG_MUL_VAL_ 145 stepper_state_resp_position_4 req 68-68;
+SG_MUL_VAL_ 145 stepper_state_resp_velocity_4 req 68-68;
+SG_MUL_VAL_ 145 stepper_state_resp_position_5 req 69-69;
+SG_MUL_VAL_ 145 stepper_state_resp_velocity_5 req 69-69;
 SG_MUL_VAL_ 145 stepper_status_0 req 80-80;
 SG_MUL_VAL_ 145 stepper_status_1 req 81-81;
 SG_MUL_VAL_ 145 stepper_status_2 req 82-82;
@@ -1341,17 +1341,17 @@ SG_MUL_VAL_ 145 stepper_maintenance_success_3 req 99-99;
 SG_MUL_VAL_ 145 stepper_maintenance_success_4 req 100-100;
 SG_MUL_VAL_ 145 stepper_maintenance_success_5 req 101-101;
 SG_MUL_VAL_ 145 stepper_velocity_max_0 req 112-112;
-SG_MUL_VAL_ 145 step_angle_0 req 112-112;
+SG_MUL_VAL_ 145 stepper_step_angle_0 req 112-112;
 SG_MUL_VAL_ 145 stepper_velocity_max_1 req 113-113;
-SG_MUL_VAL_ 145 step_angle_1 req 113-113;
+SG_MUL_VAL_ 145 stepper_step_angle_1 req 113-113;
 SG_MUL_VAL_ 145 stepper_velocity_max_2 req 114-114;
-SG_MUL_VAL_ 145 step_angle_2 req 114-114;
+SG_MUL_VAL_ 145 stepper_step_angle_2 req 114-114;
 SG_MUL_VAL_ 145 stepper_velocity_max_3 req 115-115;
-SG_MUL_VAL_ 145 step_angle_3 req 115-115;
+SG_MUL_VAL_ 145 stepper_step_angle_3 req 115-115;
 SG_MUL_VAL_ 145 stepper_velocity_max_4 req 116-116;
-SG_MUL_VAL_ 145 step_angle_4 req 116-116;
+SG_MUL_VAL_ 145 stepper_step_angle_4 req 116-116;
 SG_MUL_VAL_ 145 stepper_velocity_max_5 req 117-117;
-SG_MUL_VAL_ 145 step_angle_5 req 117-117;
+SG_MUL_VAL_ 145 stepper_step_angle_5 req 117-117;
 SG_MUL_VAL_ 256 byte_meas_ccd_req_event_0 cmd 48-48;
 SG_MUL_VAL_ 256 binary_meas_ccd_req_event_0 cmd 32-32;
 SG_MUL_VAL_ 256 pcb_heartbeat_delay cmd 16-16;
@@ -1365,20 +1365,20 @@ SG_MUL_VAL_ 257 pcb_led_success req 17-17;
 SG_MUL_VAL_ 257 laser_command_success_0 req 33-33;
 SG_MUL_VAL_ 257 laser_status_success_0 req 49-49;
 SG_MUL_VAL_ 272 diode_req_event_0 cmd 32-32;
-SG_MUL_VAL_ 272 led_green_command_0 cmd 49-49;
-SG_MUL_VAL_ 272 led_blue_command_0 cmd 49-49;
-SG_MUL_VAL_ 272 led_red_command_0 cmd 49-49;
+SG_MUL_VAL_ 272 led_rgb_cmd_green_0 cmd 49-49;
+SG_MUL_VAL_ 272 led_rgb_cmd_blue_0 cmd 49-49;
+SG_MUL_VAL_ 272 led_rgb_cmd_red_0 cmd 49-49;
 SG_MUL_VAL_ 272 led_intensity_command_0 cmd 33-33;
 SG_MUL_VAL_ 272 pcb_heartbeat_delay cmd 16-16;
 SG_MUL_VAL_ 272 pcb_led_status cmd 17-17;
-SG_MUL_VAL_ 273 diode_value_0 req 32-32;
+SG_MUL_VAL_ 273 diode_intensity_0 req 32-32;
 SG_MUL_VAL_ 273 led_rgb_success_0 req 49-49;
 SG_MUL_VAL_ 273 led_intensity_success_0 req 33-33;
 SG_MUL_VAL_ 273 pcb_heartbeat_success req 16-16;
 SG_MUL_VAL_ 273 pcb_led_success req 17-17;
-SG_MUL_VAL_ 288 led_blue_command_0 cmd 48-48;
-SG_MUL_VAL_ 288 led_green_command_0 cmd 48-48;
-SG_MUL_VAL_ 288 led_red_command_0 cmd 48-48;
+SG_MUL_VAL_ 288 led_rgb_cmd_blue_0 cmd 48-48;
+SG_MUL_VAL_ 288 led_rgb_cmd_green_0 cmd 48-48;
+SG_MUL_VAL_ 288 led_rgb_cmd_red_0 cmd 48-48;
 SG_MUL_VAL_ 288 led_intensity_command_0 cmd 32-32;
 SG_MUL_VAL_ 288 pcb_heartbeat_delay cmd 16-16;
 SG_MUL_VAL_ 288 pcb_led_status cmd 17-17;
@@ -1409,30 +1409,30 @@ SG_MUL_VAL_ 304 servo_spec_req_event_2 cmd 114-114;
 SG_MUL_VAL_ 304 servo_position_target_0 cmd 32-32;
 SG_MUL_VAL_ 304 servo_position_target_1 cmd 33-33;
 SG_MUL_VAL_ 304 servo_position_target_2 cmd 34-34;
-SG_MUL_VAL_ 305 servo_position_state_resp_2 req 66-66;
+SG_MUL_VAL_ 305 servo_state_resp_position_2 req 66-66;
 SG_MUL_VAL_ 305 rotary_encoder_velocity_0 req 37-37;
 SG_MUL_VAL_ 305 rotary_encoder_position_0 req 37-37;
 SG_MUL_VAL_ 305 rotary_encoder_id_0 req 37-37;
 SG_MUL_VAL_ 305 pcb_heartbeat_success req 16-16;
 SG_MUL_VAL_ 305 pcb_led_success req 17-17;
-SG_MUL_VAL_ 305 servo_velocity_pos_resp_0 req 32-32;
-SG_MUL_VAL_ 305 servo_velocity_pos_resp_1 req 33-33;
-SG_MUL_VAL_ 305 servo_velocity_pos_resp_2 req 34-34;
-SG_MUL_VAL_ 305 servo_velocity_vel_resp_0 req 48-48;
-SG_MUL_VAL_ 305 servo_velocity_vel_resp_1 req 49-49;
-SG_MUL_VAL_ 305 servo_velocity_vel_resp_2 req 50-50;
-SG_MUL_VAL_ 305 servo_velocity_state_resp_0 req 64-64;
-SG_MUL_VAL_ 305 servo_velocity_state_resp_1 req 65-65;
-SG_MUL_VAL_ 305 servo_velocity_state_resp_2 req 66-66;
-SG_MUL_VAL_ 305 servo_position_pos_resp_0 req 32-32;
-SG_MUL_VAL_ 305 servo_position_pos_resp_1 req 33-33;
-SG_MUL_VAL_ 305 servo_position_pos_resp_2 req 34-34;
-SG_MUL_VAL_ 305 servo_position_vel_resp_0 req 48-48;
-SG_MUL_VAL_ 305 servo_position_vel_resp_1 req 49-49;
-SG_MUL_VAL_ 305 servo_position_vel_resp_2 req 50-50;
-SG_MUL_VAL_ 305 servo_position_state_resp_0 req 64-64;
-SG_MUL_VAL_ 305 servo_position_state_resp_1 req 65-65;
-SG_MUL_VAL_ 305 servo_position_state_resp_2 req 66-66;
+SG_MUL_VAL_ 305 servo_pos_resp_velocity_0 req 32-32;
+SG_MUL_VAL_ 305 servo_pos_resp_velocity_1 req 33-33;
+SG_MUL_VAL_ 305 servo_pos_resp_velocity_2 req 34-34;
+SG_MUL_VAL_ 305 servo_vel_resp_velocity_0 req 48-48;
+SG_MUL_VAL_ 305 servo_vel_resp_velocity_1 req 49-49;
+SG_MUL_VAL_ 305 servo_vel_resp_velocity_2 req 50-50;
+SG_MUL_VAL_ 305 servo_state_resp_velocity_0 req 64-64;
+SG_MUL_VAL_ 305 servo_state_resp_velocity_1 req 65-65;
+SG_MUL_VAL_ 305 servo_state_resp_velocity_2 req 66-66;
+SG_MUL_VAL_ 305 servo_pos_resp_position_0 req 32-32;
+SG_MUL_VAL_ 305 servo_pos_resp_position_1 req 33-33;
+SG_MUL_VAL_ 305 servo_pos_resp_position_2 req 34-34;
+SG_MUL_VAL_ 305 servo_vel_resp_position_0 req 48-48;
+SG_MUL_VAL_ 305 servo_vel_resp_position_1 req 49-49;
+SG_MUL_VAL_ 305 servo_vel_resp_position_2 req 50-50;
+SG_MUL_VAL_ 305 servo_state_resp_position_0 req 64-64;
+SG_MUL_VAL_ 305 servo_state_resp_position_1 req 65-65;
+SG_MUL_VAL_ 305 servo_state_resp_position_2 req 66-66;
 SG_MUL_VAL_ 305 servo_status_0 req 80-80;
 SG_MUL_VAL_ 305 servo_status_1 req 81-81;
 SG_MUL_VAL_ 305 servo_status_2 req 82-82;
@@ -1456,14 +1456,14 @@ SG_MUL_VAL_ 320 servo_position_target_0 cmd 32-32;
 SG_MUL_VAL_ 320 servo_velocity_target_0 cmd 48-48;
 SG_MUL_VAL_ 320 servo_maintenance_cmd_0 cmd 96-96;
 SG_MUL_VAL_ 320 servo_spec_req_event_0 cmd 112-112;
-SG_MUL_VAL_ 321 servo_velocity_vel_resp_0 req 48-48;
-SG_MUL_VAL_ 321 servo_velocity_state_resp_0 req 64-64;
-SG_MUL_VAL_ 321 servo_velocity_pos_resp_0 req 32-32;
-SG_MUL_VAL_ 321 servo_position_vel_resp_0 req 48-48;
-SG_MUL_VAL_ 321 servo_position_state_resp_0 req 64-64;
+SG_MUL_VAL_ 321 servo_vel_resp_velocity_0 req 48-48;
+SG_MUL_VAL_ 321 servo_state_resp_velocity_0 req 64-64;
+SG_MUL_VAL_ 321 servo_pos_resp_velocity_0 req 32-32;
+SG_MUL_VAL_ 321 servo_vel_resp_position_0 req 48-48;
+SG_MUL_VAL_ 321 servo_state_resp_position_0 req 64-64;
 SG_MUL_VAL_ 321 pcb_heartbeat_success req 16-16;
 SG_MUL_VAL_ 321 pcb_led_success req 17-17;
-SG_MUL_VAL_ 321 servo_position_pos_resp_0 req 32-32;
+SG_MUL_VAL_ 321 servo_pos_resp_position_0 req 32-32;
 SG_MUL_VAL_ 321 servo_status_0 req 80-80;
 SG_MUL_VAL_ 321 servo_maintenance_success_0 req 96-96;
 SG_MUL_VAL_ 321 servo_type_0 req 112-112;
@@ -1510,45 +1510,45 @@ SG_MUL_VAL_ 96 servo_spec_req_event_1 cmd 121-121;
 SG_MUL_VAL_ 96 laser_command_0 cmd 42-42;
 SG_MUL_VAL_ 96 laser_status_req_event_0 cmd 58-58;
 SG_MUL_VAL_ 96 rotary_encoder_id_0 cmd 43-43;
-SG_MUL_VAL_ 97 servo_velocity_vel_resp_1 req 57-57;
-SG_MUL_VAL_ 97 servo_velocity_vel_resp_0 req 56-56;
-SG_MUL_VAL_ 97 servo_velocity_state_resp_1 req 73-73;
-SG_MUL_VAL_ 97 servo_velocity_state_resp_0 req 72-72;
+SG_MUL_VAL_ 97 servo_vel_resp_velocity_1 req 57-57;
+SG_MUL_VAL_ 97 servo_vel_resp_velocity_0 req 56-56;
+SG_MUL_VAL_ 97 servo_state_resp_velocity_1 req 73-73;
+SG_MUL_VAL_ 97 servo_state_resp_velocity_0 req 72-72;
 SG_MUL_VAL_ 97 servo_type_1 req 121-121;
 SG_MUL_VAL_ 97 servo_type_0 req 120-120;
-SG_MUL_VAL_ 97 servo_position_vel_resp_1 req 57-57;
-SG_MUL_VAL_ 97 servo_position_vel_resp_0 req 56-56;
-SG_MUL_VAL_ 97 servo_position_state_resp_1 req 73-73;
-SG_MUL_VAL_ 97 servo_position_state_resp_0 req 72-72;
+SG_MUL_VAL_ 97 servo_vel_resp_position_1 req 57-57;
+SG_MUL_VAL_ 97 servo_vel_resp_position_0 req 56-56;
+SG_MUL_VAL_ 97 servo_state_resp_position_1 req 73-73;
+SG_MUL_VAL_ 97 servo_state_resp_position_0 req 72-72;
 SG_MUL_VAL_ 97 rotary_encoder_velocity_0 req 43-43;
 SG_MUL_VAL_ 97 rotary_encoder_position_0 req 43-43;
 SG_MUL_VAL_ 97 rotary_encoder_id_0 req 43-43;
 SG_MUL_VAL_ 97 pcb_heartbeat_success req 16-16;
 SG_MUL_VAL_ 97 pcb_led_success req 17-17;
-SG_MUL_VAL_ 97 dc_motor_position_pos_resp_0 req 32-32;
-SG_MUL_VAL_ 97 dc_motor_velocity_pos_resp_0 req 32-32;
-SG_MUL_VAL_ 97 dc_motor_position_pos_resp_1 req 33-33;
-SG_MUL_VAL_ 97 dc_motor_velocity_pos_resp_1 req 33-33;
-SG_MUL_VAL_ 97 dc_motor_position_pos_resp_2 req 34-34;
-SG_MUL_VAL_ 97 dc_motor_velocity_pos_resp_2 req 34-34;
-SG_MUL_VAL_ 97 dc_motor_position_pos_resp_3 req 35-35;
-SG_MUL_VAL_ 97 dc_motor_velocity_pos_resp_3 req 35-35;
-SG_MUL_VAL_ 97 dc_motor_position_vel_resp_0 req 48-48;
-SG_MUL_VAL_ 97 dc_motor_velocity_vel_resp_0 req 48-48;
-SG_MUL_VAL_ 97 dc_motor_position_vel_resp_1 req 49-49;
-SG_MUL_VAL_ 97 dc_motor_velocity_vel_resp_1 req 49-49;
-SG_MUL_VAL_ 97 dc_motor_position_vel_resp_2 req 50-50;
-SG_MUL_VAL_ 97 dc_motor_velocity_vel_resp_2 req 50-50;
-SG_MUL_VAL_ 97 dc_motor_position_vel_resp_3 req 51-51;
-SG_MUL_VAL_ 97 dc_motor_velocity_vel_resp_3 req 51-51;
-SG_MUL_VAL_ 97 dc_motor_position_state_resp_0 req 64-64;
-SG_MUL_VAL_ 97 dc_motor_velocity_state_resp_0 req 64-64;
-SG_MUL_VAL_ 97 dc_motor_position_state_resp_1 req 65-65;
-SG_MUL_VAL_ 97 dc_motor_velocity_state_resp_1 req 65-65;
-SG_MUL_VAL_ 97 dc_motor_position_state_resp_2 req 66-66;
-SG_MUL_VAL_ 97 dc_motor_velocity_state_resp_2 req 66-66;
-SG_MUL_VAL_ 97 dc_motor_position_state_resp_3 req 67-67;
-SG_MUL_VAL_ 97 dc_motor_velocity_state_resp_3 req 67-67;
+SG_MUL_VAL_ 97 dc_motor_pos_resp_position_0 req 32-32;
+SG_MUL_VAL_ 97 dc_motor_pos_resp_velocity_0 req 32-32;
+SG_MUL_VAL_ 97 dc_motor_pos_resp_position_1 req 33-33;
+SG_MUL_VAL_ 97 dc_motor_pos_resp_velocity_1 req 33-33;
+SG_MUL_VAL_ 97 dc_motor_pos_resp_position_2 req 34-34;
+SG_MUL_VAL_ 97 dc_motor_pos_resp_velocity_2 req 34-34;
+SG_MUL_VAL_ 97 dc_motor_pos_resp_position_3 req 35-35;
+SG_MUL_VAL_ 97 dc_motor_pos_resp_velocity_3 req 35-35;
+SG_MUL_VAL_ 97 dc_motor_vel_resp_position_0 req 48-48;
+SG_MUL_VAL_ 97 dc_motor_vel_resp_velocity_0 req 48-48;
+SG_MUL_VAL_ 97 dc_motor_vel_resp_position_1 req 49-49;
+SG_MUL_VAL_ 97 dc_motor_vel_resp_velocity_1 req 49-49;
+SG_MUL_VAL_ 97 dc_motor_vel_resp_position_2 req 50-50;
+SG_MUL_VAL_ 97 dc_motor_vel_resp_velocity_2 req 50-50;
+SG_MUL_VAL_ 97 dc_motor_vel_resp_position_3 req 51-51;
+SG_MUL_VAL_ 97 dc_motor_vel_resp_velocity_3 req 51-51;
+SG_MUL_VAL_ 97 dc_motor_state_resp_position_0 req 64-64;
+SG_MUL_VAL_ 97 dc_motor_state_resp_velocity_0 req 64-64;
+SG_MUL_VAL_ 97 dc_motor_state_resp_position_1 req 65-65;
+SG_MUL_VAL_ 97 dc_motor_state_resp_velocity_1 req 65-65;
+SG_MUL_VAL_ 97 dc_motor_state_resp_position_2 req 66-66;
+SG_MUL_VAL_ 97 dc_motor_state_resp_velocity_2 req 66-66;
+SG_MUL_VAL_ 97 dc_motor_state_resp_position_3 req 67-67;
+SG_MUL_VAL_ 97 dc_motor_state_resp_velocity_3 req 67-67;
 SG_MUL_VAL_ 97 dc_motor_status_0 req 80-80;
 SG_MUL_VAL_ 97 dc_motor_status_1 req 81-81;
 SG_MUL_VAL_ 97 dc_motor_status_2 req 82-82;
@@ -1559,10 +1559,10 @@ SG_MUL_VAL_ 97 dc_motor_maintenance_success_2 req 98-98;
 SG_MUL_VAL_ 97 dc_motor_maintenance_success_3 req 99-99;
 SG_MUL_VAL_ 97 dc_motor_velocity_max_0 req 112-112;
 SG_MUL_VAL_ 97 dc_motor_velocity_max_1 req 113-113;
-SG_MUL_VAL_ 97 servo_position_pos_resp_0 req 40-40;
-SG_MUL_VAL_ 97 servo_velocity_pos_resp_0 req 40-40;
-SG_MUL_VAL_ 97 servo_position_pos_resp_1 req 41-41;
-SG_MUL_VAL_ 97 servo_velocity_pos_resp_1 req 41-41;
+SG_MUL_VAL_ 97 servo_pos_resp_position_0 req 40-40;
+SG_MUL_VAL_ 97 servo_pos_resp_velocity_0 req 40-40;
+SG_MUL_VAL_ 97 servo_pos_resp_position_1 req 41-41;
+SG_MUL_VAL_ 97 servo_pos_resp_velocity_1 req 41-41;
 SG_MUL_VAL_ 97 servo_status_0 req 88-88;
 SG_MUL_VAL_ 97 servo_status_1 req 89-89;
 SG_MUL_VAL_ 97 servo_maintenance_success_0 req 104-104;

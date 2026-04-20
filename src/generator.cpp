@@ -108,6 +108,12 @@ struct FieldMeta {
     unsigned int start_bit;
     unsigned int length;
     std::string type;
+    std::string comment;
+    std::string unit;
+    double scale;
+    double offset;
+    CppCAN::CANSignal::Range range;
+    std::map<unsigned int, std::string> choices;
 };
 
 struct Support {
@@ -123,49 +129,81 @@ struct Support {
 struct GroupMeta {
     std::string device;
     std::string command;
+    std::string struct_name;
+    std::string comment;
     std::vector<FieldMeta> fields;
     std::vector<Support> supports;
 };
 
-static void parseDeviceCommand(const std::string& name, std::string& device, std::string& command) {
+static void parseDeviceCommand(const std::string& name, std::string& device, std::string& command, std::string& sig_prefix) {
     std::string n = name;
     std::transform(n.begin(), n.end(), n.begin(), [](unsigned char c){ return std::tolower(c); });
-    
-    static const std::vector<std::string> devices = {
-        "dc_motor", "servo", "stepper", "laser", "led", "rotary_encoder", 
-        "limit_switch", "diode", "ccd", "spectroscopy", "fluorometry",
-        "power", "swerve", "arm", "kill", "pcb"
+
+    // (signal_prefix_in_dbc, canonical_device_name)
+    static const std::vector<std::pair<std::string, std::string>> prefixMap = {
+        {"dc_motor",          "dc_motor"},
+        {"servo",             "servo"},
+        {"stepper",           "stepper"},
+        {"laser",             "laser"},
+        {"limit_switch",      "limit_switch"},
+        {"rotary_encoder",    "rotary_absolute_encoder"},
+        {"diode",             "sensor_diode"},
+        {"binary_meas_ccd",   "ccd"},
+        {"byte_meas_ccd",     "ccd"},
+        {"binary_ccd",        "ccd"},
+        {"byte_ccd",          "ccd"},
+        {"ccd",               "ccd"},
+        {"spectroscopy",      "ccd"},
+        {"led",               "led"},
+        {"pcb_heartbeat",     "pcb"},
+        {"pcb_led",           "pcb"},
+        {"kill",              "power"},
+        {"power",             "power"},
     };
-    
-    for (const auto& d : devices) {
-        if (n.find(d) == 0) {
-            device = d;
-            command = n.substr(d.size());
-            while(!command.empty() && (command[0] == '_' || command[0] == '-')) command.erase(0, 1);
-            if (command.empty()) command = "status";
-            
-            if (command.size() > 6 && command.substr(command.size()-6) == "_pcb_c") command = command.substr(0, command.size()-6) + "_control";
-            if (command.size() > 6 && command.substr(command.size()-6) == "_pcb_r") command = command.substr(0, command.size()-6) + "_response";
-            return;
+
+    size_t bestLen = 0;
+    for (const auto& [prefix, dev] : prefixMap) {
+        if (n.find(prefix) == 0 && prefix.size() > bestLen) {
+            bestLen = prefix.size();
+            device = dev;
+            sig_prefix = prefix;
         }
     }
 
-    // Fallback: search for device anywhere in the name
-    for (const auto& d : devices) {
-        size_t pos = n.find(d);
-        if (pos != std::string::npos) {
-            device = d;
-            command = n;
-            command.erase(pos, d.size());
-            while(!command.empty() && (command[0] == '_' || command[0] == '-')) command.erase(0, 1);
-            while(!command.empty() && (command.back() == '_' || command.back() == '-')) command.pop_back();
-            if (command.empty()) command = "status";
-            return;
-        }
+    if (bestLen > 0) {
+        command = n.substr(bestLen);
+        while (!command.empty() && (command[0] == '_' || command[0] == '-')) command.erase(0, 1);
+        if (command.empty()) command = "status";
+        return;
     }
-    
-    device = "System";
+
+    device = "unknown";
+    sig_prefix = "";
     command = n;
+}
+
+static std::string commonPrefix(const std::vector<std::string>& stems) {
+    if (stems.empty()) return "";
+    std::string pfx = stems[0];
+    for (const auto& s : stems) {
+        size_t i = 0;
+        while (i < pfx.size() && i < s.size() && pfx[i] == s[i]) ++i;
+        pfx = pfx.substr(0, i);
+    }
+    while (!pfx.empty() && pfx.back() != '_') pfx.pop_back();
+    return pfx;
+}
+
+static std::string formatDoxygen(const std::string& comment, const std::string& indent) {
+    if (comment.empty()) return "";
+    std::string result = indent + "/**\n";
+    std::stringstream ss(comment);
+    std::string line;
+    while (std::getline(ss, line)) {
+        result += indent + " * " + line + "\n";
+    }
+    result += indent + " */\n";
+    return result;
 }
 
 std::string generate(const CppCAN::CANDatabase& db, const std::string& dbc_filename, const std::string& dbc_hash, const std::string& date) {
@@ -173,11 +211,21 @@ std::string generate(const CppCAN::CANDatabase& db, const std::string& dbc_filen
     std::set<std::string> pcbs;
 
     for (const auto& [id, frame] : db) {
+        size_t p = frame.name().find("_PCB");
+        if (p != std::string::npos) pcbs.insert(frame.name().substr(0, p));
+    }
+
+
+    auto findPcb = [&](const std::string& frame_name) -> std::string {
+        std::string best;
+        for (const auto& p : pcbs)
+            if (frame_name.find(p) == 0 && p.size() > best.size()) best = p;
+        return best.empty() ? frame_name : best;
+    };
+
+    for (const auto& [id, frame] : db) {
         std::string frame_name = frame.name();
-        std::string pcb = frame_name;
-        size_t p = pcb.find("_PCB");
-        if (p != std::string::npos) pcb = pcb.substr(0, p);
-        pcbs.insert(pcb);
+        std::string pcb = findPcb(frame_name);
 
         int mux_sb = 0, mux_len = 0;
         bool has_mux = false;
@@ -192,16 +240,30 @@ std::string generate(const CppCAN::CANDatabase& db, const std::string& dbc_filen
             for (const auto& [sn, sig] : frame)
                 if (sig.mux_type() == CppCAN::CANSignal::MuxedSignal) byMux[sig.mux_value()].push_back({sn, &sig});
 
-            using LayoutKey = std::vector<std::tuple<std::string, int, int, std::string>>;
+            struct SigLayout {
+                std::string stem;
+                int sb, len;
+                std::string type;
+                std::string comment;
+                std::string unit;
+                double scale, offset;
+                CppCAN::CANSignal::Range range;
+                std::map<unsigned int, std::string> choices;
+                bool operator<(const SigLayout& o) const {
+                    return std::tie(stem, sb, len, type) < std::tie(o.stem, o.sb, o.len, o.type);
+                }
+            };
+            using LayoutKey = std::vector<SigLayout>;
             std::map<LayoutKey, std::vector<int>> layouts;
+
             for (auto& [mv, sigs] : byMux) {
                 LayoutKey key;
                 for (auto& s : sigs) {
                     std::string stem; int port;
                     if (splitPortSuffix(s.first, stem, port))
-                        key.push_back({stem, (int)s.second->start_bit(), (int)s.second->length(), cppType(*s.second)});
+                        key.push_back({stem, (int)s.second->start_bit(), (int)s.second->length(), cppType(*s.second), s.second->comment(), s.second->unit(), s.second->scale(), s.second->offset(), s.second->range(), s.second->choices()});
                     else
-                        key.push_back({s.first, (int)s.second->start_bit(), (int)s.second->length(), cppType(*s.second)});
+                        key.push_back({s.first, (int)s.second->start_bit(), (int)s.second->length(), cppType(*s.second), s.second->comment(), s.second->unit(), s.second->scale(), s.second->offset(), s.second->range(), s.second->choices()});
                 }
                 std::sort(key.begin(), key.end());
                 layouts[key].push_back(mv);
@@ -211,23 +273,42 @@ std::string generate(const CppCAN::CANDatabase& db, const std::string& dbc_filen
                 if (key.empty()) continue;
                 std::sort(mvs.begin(), mvs.end());
                 std::vector<std::string> stems;
-                for (auto& t : key) stems.push_back(std::get<0>(t));
-                
-                std::string dev, cmd; 
-                parseDeviceCommand(stems[0], dev, cmd);
-                
+                for (auto& sl : key) stems.push_back(sl.stem);
+
+                std::string dev, cmd, sig_prefix;
+                parseDeviceCommand(stems[0], dev, cmd, sig_prefix);
+
+                // For multi-signal mux groups, use the common prefix of device-stripped stems
+                // as the command name so field names are derived from the varying suffix.
+                if (stems.size() > 1) {
+                    std::vector<std::string> stripped;
+                    for (const auto& s : stems) {
+                        std::string st = s;
+                        if (!sig_prefix.empty() && st.find(sig_prefix + "_") == 0)
+                            st = st.substr(sig_prefix.size() + 1);
+                        else if (!dev.empty() && st.find(dev + "_") == 0)
+                            st = st.substr(dev.size() + 1);
+                        stripped.push_back(st);
+                    }
+                    std::string pfx = commonPrefix(stripped);
+                    while (!pfx.empty() && pfx.back() == '_') pfx.pop_back();
+                    if (!pfx.empty()) cmd = pfx;
+                }
+
                 auto& gm = api[{dev, cmd}];
-                gm.device = dev; gm.command = cmd;
+                gm.device = dev; gm.command = cmd; gm.struct_name = cmd;
                 if (gm.fields.empty()) {
-                    std::string cmd_full = dev + "_" + cmd;
-                    for (auto& [stem, sb, len, type] : key) {
-                        std::string name = stem;
+                    gm.comment = frame.comment();
+                    std::string cmd_full = sig_prefix + "_" + cmd;
+                    for (auto& sl : key) {
+                        std::string name = sl.stem;
                         if (name == cmd_full) name = "value";
                         else if (name.find(cmd_full + "_") == 0) name = name.substr(cmd_full.size() + 1);
+                        else if (!sig_prefix.empty() && name.find(sig_prefix + "_") == 0) name = name.substr(sig_prefix.size() + 1);
                         else if (name.find(dev + "_") == 0) name = name.substr(dev.size() + 1);
-                        
+
                         if (name.empty()) name = "value";
-                        gm.fields.push_back({stem, toIdentifier(name), (unsigned)sb, (unsigned)len, type});
+                        gm.fields.push_back({sl.stem, toIdentifier(name), (unsigned)sl.sb, (unsigned)sl.len, sl.type, sl.comment, sl.unit, sl.scale, sl.offset, sl.range, sl.choices});
                     }
                 }
                 int maxB = mux_sb + mux_len;
@@ -235,23 +316,47 @@ std::string generate(const CppCAN::CANDatabase& db, const std::string& dbc_filen
                 gm.supports.push_back({pcb, (uint32_t)frame.can_id(), mvs[0], (int)mvs.size(), mux_sb, mux_len, (maxB + 7) / 8});
             }
         } else {
-            std::string dev, cmd; 
-            parseDeviceCommand(frame_name, dev, cmd);
+            std::string dev, cmd, sig_prefix;
+            parseDeviceCommand(frame_name, dev, cmd, sig_prefix);
             auto& gm = api[{dev, cmd}];
-            gm.device = dev; gm.command = cmd;
+            gm.device = dev; gm.command = cmd; gm.struct_name = cmd;
             if (gm.fields.empty()) {
-                std::string cmd_full = dev + "_" + cmd;
+                gm.comment = frame.comment();
+                std::string cmd_full = sig_prefix + "_" + cmd;
                 for (const auto& [sn, sig] : frame) {
                     std::string name = sn;
                     if (name == cmd_full) name = "value";
                     else if (name.find(cmd_full + "_") == 0) name = name.substr(cmd_full.size() + 1);
+                    else if (!sig_prefix.empty() && name.find(sig_prefix + "_") == 0) name = name.substr(sig_prefix.size() + 1);
                     else if (name.find(dev + "_") == 0) name = name.substr(dev.size() + 1);
-                    
+
                     if (name.empty()) name = "value";
-                    gm.fields.push_back({sn, toIdentifier(name), sig.start_bit(), sig.length(), cppType(sig)});
+                    gm.fields.push_back({sn, toIdentifier(name), sig.start_bit(), sig.length(), cppType(sig), sig.comment(), sig.unit(), sig.scale(), sig.offset(), sig.range(), sig.choices()});
                 }
             }
             gm.supports.push_back({pcb, (uint32_t)frame.can_id(), 0, 1, 0, 0, (int)frame.dlc()});
+        }
+    }
+
+    // Dedup: within each device, groups with identical multi-field layouts share one struct.
+    // The api map is ordered, so the alphabetically-first command name becomes canonical.
+    // struct_name_overrides maps {device, canonical_command} to a preferred struct name.
+    static const std::map<std::pair<std::string, std::string>, std::string> struct_name_overrides = {
+        {{"dc_motor", "pos_resp"}, "motor_state"},
+        {{"servo",    "pos_resp"}, "servo_state"},
+        {{"stepper",  "pos_resp"}, "stepper_state"},
+    };
+    {
+        using FieldKey = std::vector<std::tuple<std::string, std::string, unsigned, unsigned>>; // name,type,sb,len
+        std::map<std::string, std::map<FieldKey, std::string>> deviceLayoutCanon;
+        for (auto& [k, g] : api) {
+            if (g.fields.size() < 2) continue;
+            FieldKey fk;
+            for (const auto& f : g.fields) fk.emplace_back(f.api_name, f.type, f.start_bit, f.length);
+            auto& canon = deviceLayoutCanon[g.device][fk];
+            if (canon.empty()) canon = g.command;
+            auto it = struct_name_overrides.find({g.device, canon});
+            g.struct_name = (it != struct_name_overrides.end()) ? it->second : canon;
         }
     }
 
@@ -266,12 +371,42 @@ std::string generate(const CppCAN::CANDatabase& db, const std::string& dbc_filen
 
     for (auto& [dev, gms] : byDev) {
         out << "namespace " << toCamelCase(dev) << " {\n\n";
+        std::set<std::string> emittedStructs;
         for (const auto* g : gms) {
-            std::string cName = toCamelCase(g->command);
-            out << "struct " << cName << " {\n";
-            for (const auto& f : g->fields) out << "    " << f.type << " " << f.api_name << "{};\n";
-            out << "};\n\n";
+            std::string cName = toCamelCase(g->struct_name);
+            if (emittedStructs.insert(g->struct_name).second) {
+                out << formatDoxygen(g->comment, "    ");
+                out << "struct " << cName << " {\n";
+            for (const auto& f : g->fields) {
+                std::string fullComment = f.comment;
+                if (!f.unit.empty()) {
+                    if (!fullComment.empty()) fullComment += "\n\n";
+                    fullComment += "Unit: " + f.unit;
+                }
+                if (!f.choices.empty()) {
+                    if (!fullComment.empty()) fullComment += "\n\n";
+                    fullComment += "Values:";
+                    for (auto const& [val, desc] : f.choices) {
+                        fullComment += "\n  - " + std::to_string(val) + ": " + desc;
+                    }
+                }
+                if (f.scale != 1.0 || f.offset != 0.0) {
+                    if (!fullComment.empty()) fullComment += "\n\n";
+                    fullComment += "Scaling: x" + std::to_string(f.scale) + " + " + std::to_string(f.offset);
+                }
+                if (f.range.defined) {
+                    if (!fullComment.empty()) fullComment += "\n\n";
+                    fullComment += "Range: [" + std::to_string(f.range.min) + ", " + std::to_string(f.range.max) + "]";
+                }
 
+                out << formatDoxygen(fullComment, "        ");
+                out << "    " << f.type << " " << f.api_name << "{};\n";
+            }
+            out << "};\n\n";
+            out << "struct " << cName << "Result { uint8_t port; " << cName << " data; };\n";
+            } // end struct-emission guard
+
+            out << formatDoxygen("Encodes " + g->command + " message for the given subsystem and port.", "    ");
             out << "inline CanFrame encode_" << toIdentifier(g->command) << "(Subsystem sub, uint8_t port, const " << cName << "& data) {\n"
                 << "    CanFrame f{};\n    switch(sub) {\n";
             std::set<std::string> seenPcb;
@@ -287,7 +422,7 @@ std::string generate(const CppCAN::CANDatabase& db, const std::string& dbc_filen
             for (const auto& f : g->fields) out << "    encode_field<" << f.start_bit << "," << f.length << ">(f.data.data(), " << (f.type == "bool" ? "static_cast<uint8_t>(data." + f.api_name + ")" : "data." + f.api_name) << ");\n";
             out << "    return f;\n}\n\n";
 
-            out << "struct " << cName << "Result { uint8_t port; " << cName << " data; };\n";
+            out << formatDoxygen("Decodes " + g->command + " message from the given CanFrame.", "    ");
             out << "inline std::optional<" << cName << "Result> decode_" << toIdentifier(g->command) << "(const CanFrame& f) {\n";
             std::set<std::tuple<uint32_t, int, int>> seenIdMux;
             for (const auto& s : g->supports) {
