@@ -17,6 +17,21 @@ static std::string toIdentifier(const std::string& name) {
     return result;
 }
 
+static std::string toCamelCase(const std::string& name, bool firstUpper = true) {
+    std::string result;
+    bool nextUpper = firstUpper;
+    for (char c : name) {
+        if (c == '_') {
+            nextUpper = true;
+        } else {
+            result += nextUpper ? static_cast<char>(std::toupper(static_cast<unsigned char>(c)))
+                                : static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+            nextUpper = false;
+        }
+    }
+    return result;
+}
+
 static std::string cppType(const CppCAN::CANSignal& sig) {
     if (sig.length() == 1) return "bool";
     bool isSigned = (sig.signedness() == CppCAN::CANSignal::Signed);
@@ -49,6 +64,7 @@ static const char* HEADER_BOILERPLATE = R"(#pragma once
 #include <cstdint>
 #include <cstring>
 #include <type_traits>
+#include <optional>
 
 namespace Protocol {
 
@@ -56,7 +72,7 @@ template<int StartBit, int Length, typename UInt>
 inline void encode_field(uint8_t* data, UInt value) {
     using U64 = uint64_t;
     using Uns = std::make_unsigned_t<UInt>;
-    U64 word;
+    U64 word = 0;
     std::memcpy(&word, data, 8);
     constexpr U64 mask = (Length == 64) ? ~U64{0} : ((U64{1} << Length) - 1);
     word = (word & ~(mask << StartBit)) | ((static_cast<U64>(static_cast<Uns>(value)) & mask) << StartBit);
@@ -66,13 +82,12 @@ inline void encode_field(uint8_t* data, UInt value) {
 template<int StartBit, int Length, typename T = uint64_t>
 inline T decode_field(const uint8_t* data) {
     using U64 = uint64_t;
-    U64 word;
+    U64 word = 0;
     std::memcpy(&word, data, 8);
     constexpr U64 mask = (Length == 64) ? ~U64{0} : ((U64{1} << Length) - 1);
     U64 raw = (word >> StartBit) & mask;
     if constexpr (std::is_signed_v<T> && Length < 64) {
-        if (raw >> (Length - 1))
-            raw |= ~mask;
+        if (raw >> (Length - 1)) raw |= ~mask;
         return static_cast<T>(static_cast<int64_t>(raw));
     }
     return static_cast<T>(raw);
@@ -85,200 +100,208 @@ struct CanFrame {
     bool is_extended{};
 };
 
-template<typename T> T decode(const CanFrame& frame);
-
 )";
 
-struct GroupField {
+struct FieldMeta {
     std::string stem;
+    std::string api_name;
     unsigned int start_bit;
     unsigned int length;
-    std::string cpp_type;
+    std::string type;
 };
 
-struct MuxCommandGroup {
-    std::string group_stem;
+struct Support {
+    std::string pcb;
+    uint32_t id;
     int base_mux;
     int num_ports;
-    unsigned int mux_start_bit;
-    unsigned int mux_length;
-    std::vector<GroupField> fields;
-    unsigned int dlc;
+    int mux_start;
+    int mux_len;
+    int dlc;
 };
 
-static std::string commonPrefix(const std::vector<std::string>& stems) {
-    if (stems.empty()) return "";
-    std::string pfx = stems[0];
-    for (const auto& s : stems) {
-        size_t i = 0;
-        while (i < pfx.size() && i < s.size() && pfx[i] == s[i]) ++i;
-        pfx = pfx.substr(0, i);
-    }
-    auto pos = pfx.rfind('_');
-    if (pos != std::string::npos) pfx = pfx.substr(0, pos);
-    while (!pfx.empty() && pfx.back() == '_') pfx.pop_back();
-    return pfx;
-}
+struct GroupMeta {
+    std::string device;
+    std::string command;
+    std::vector<FieldMeta> fields;
+    std::vector<Support> supports;
+};
 
-static std::string commonSuffix(const std::vector<std::string>& stems) {
-    if (stems.empty()) return "";
-    auto rev = [](std::string s){ std::reverse(s.begin(), s.end()); return s; };
-    std::vector<std::string> reversed;
-    for (const auto& s : stems) reversed.push_back(rev(s));
-    std::string pfx = reversed[0];
-    for (const auto& s : reversed) {
-        size_t i = 0;
-        while (i < pfx.size() && i < s.size() && pfx[i] == s[i]) ++i;
-        pfx = pfx.substr(0, i);
-    }
-    std::reverse(pfx.begin(), pfx.end());
-    while (!pfx.empty() && pfx.front() == '_') pfx.erase(pfx.begin());
-    return pfx;
-}
-
-static std::string groupStem(const std::vector<GroupField>& fields, int base_mux) {
-    if (fields.size() == 1) return fields[0].stem;
-    std::vector<std::string> stems;
-    for (const auto& f : fields) stems.push_back(f.stem);
-    std::string s = commonSuffix(stems);
-    if (s.size() >= 4) return s;
-    s = commonPrefix(stems);
-    if (s.size() >= 4) return s;
-    std::ostringstream oss;
-    oss << "cmd_0x" << std::hex << base_mux;
-    return oss.str();
-}
-
-static std::vector<MuxCommandGroup> findMuxGroups(const CppCAN::CANFrame& frame) {
-    unsigned int mux_start = 0, mux_len = 8;
-    for (const auto& [sn, sig] : frame) {
-        if (sig.mux_type() == CppCAN::CANSignal::Multiplexer) {
-            mux_start = sig.start_bit();
-            mux_len   = sig.length();
-            break;
+static void parseDeviceCommand(const std::string& name, std::string& device, std::string& command) {
+    std::string n = name;
+    std::transform(n.begin(), n.end(), n.begin(), [](unsigned char c){ return std::tolower(c); });
+    
+    static const std::vector<std::string> devices = {
+        "dc_motor", "servo", "stepper", "laser", "led", "rotary_encoder", 
+        "limit_switch", "diode", "ccd", "spectroscopy", "fluorometry",
+        "power", "swerve", "arm", "kill", "pcb"
+    };
+    
+    for (const auto& d : devices) {
+        if (n.find(d) == 0) {
+            device = d;
+            command = n.substr(d.size());
+            while(!command.empty() && (command[0] == '_' || command[0] == '-')) command.erase(0, 1);
+            if (command.empty()) command = "status";
+            
+            if (command.size() > 6 && command.substr(command.size()-6) == "_pcb_c") command = command.substr(0, command.size()-6) + "_control";
+            if (command.size() > 6 && command.substr(command.size()-6) == "_pcb_r") command = command.substr(0, command.size()-6) + "_response";
+            return;
         }
     }
 
-    struct SigInfo { std::string stem; int port; unsigned int start_bit; unsigned int length; std::string type; };
-    std::map<int, std::vector<SigInfo>> byMuxVal;
-    for (const auto& [sn, sig] : frame) {
-        if (sig.mux_type() != CppCAN::CANSignal::MuxedSignal) continue;
-        std::string stem; int port;
-        if (splitPortSuffix(sig.name(), stem, port))
-            byMuxVal[sig.mux_value()].push_back({stem, port, sig.start_bit(), sig.length(), cppType(sig)});
-    }
-    if (byMuxVal.empty()) return {};
-
-    using LayoutKey = std::vector<std::tuple<std::string, unsigned int, unsigned int, std::string>>;
-    std::map<LayoutKey, std::vector<int>> layoutToMuxVals;
-    for (auto& [mv, sigs] : byMuxVal) {
-        LayoutKey key;
-        for (auto& si : sigs) key.push_back({si.stem, si.start_bit, si.length, si.type});
-        std::sort(key.begin(), key.end());
-        layoutToMuxVals[key].push_back(mv);
-    }
-
-    std::vector<MuxCommandGroup> groups;
-    for (auto& [key, muxVals] : layoutToMuxVals) {
-        std::sort(muxVals.begin(), muxVals.end());
-        bool consecutive = true;
-        for (int i = 1; i < (int)muxVals.size(); i++)
-            if (muxVals[i] != muxVals[i-1] + 1) { consecutive = false; break; }
-        if (!consecutive) continue;
-
-        int base = muxVals[0];
-        std::vector<GroupField> fields;
-        for (auto& [stem, sb, len, type] : key) fields.push_back({stem, sb, len, type});
-        std::sort(fields.begin(), fields.end(), [](const auto& a, const auto& b){ return a.start_bit < b.start_bit; });
-
-        unsigned int maxBit = mux_start + mux_len - 1;
-        for (auto& f : fields) maxBit = std::max(maxBit, f.start_bit + f.length - 1);
-
-        groups.push_back({toIdentifier(groupStem(fields, base)), base, (int)muxVals.size(), mux_start, mux_len, std::move(fields), (maxBit / 8) + 1});
-    }
-
-    std::sort(groups.begin(), groups.end(), [](const auto& a, const auto& b){ return a.base_mux < b.base_mux; });
-    std::map<std::string, int> stemCount;
-    for (auto& g : groups) stemCount[g.group_stem]++;
-    for (auto& g : groups) if (stemCount[g.group_stem] > 1) g.group_stem += "_0x" + (std::ostringstream() << std::hex << g.base_mux).str();
-    return groups;
-}
-
-static std::string render(std::string tmpl, const std::map<std::string, std::string>& vars) {
-    for (auto const& [key, val] : vars) {
-        std::string placeholder = "{{" + key + "}}";
-        size_t pos = 0;
-        while ((pos = tmpl.find(placeholder, pos)) != std::string::npos) {
-            tmpl.replace(pos, placeholder.length(), val);
-            pos += val.length();
+    // Fallback: search for device anywhere in the name
+    for (const auto& d : devices) {
+        size_t pos = n.find(d);
+        if (pos != std::string::npos) {
+            device = d;
+            command = n;
+            command.erase(pos, d.size());
+            while(!command.empty() && (command[0] == '_' || command[0] == '-')) command.erase(0, 1);
+            while(!command.empty() && (command.back() == '_' || command.back() == '-')) command.pop_back();
+            if (command.empty()) command = "status";
+            return;
         }
     }
-    return tmpl;
+    
+    device = "System";
+    command = n;
 }
 
 std::string generate(const CppCAN::CANDatabase& db, const std::string& dbc_filename, const std::string& dbc_hash, const std::string& date) {
-    std::ostringstream out;
-    out << "// Generated from " << dbc_filename << " (Hash: " << dbc_hash << ") on " << date << "\n" << HEADER_BOILERPLATE;
+    std::map<std::pair<std::string, std::string>, GroupMeta> api;
+    std::set<std::string> pcbs;
 
-    struct Meta { uint32_t id; std::string name; };
-    std::vector<Meta> metas;
+    for (const auto& [id, frame] : db) {
+        std::string frame_name = frame.name();
+        std::string pcb = frame_name;
+        size_t p = pcb.find("_PCB");
+        if (p != std::string::npos) pcb = pcb.substr(0, p);
+        pcbs.insert(pcb);
 
-    for (const auto& [key, frame] : db) {
-        std::string name = toIdentifier(frame.name());
-        metas.push_back({static_cast<uint32_t>(frame.can_id()), name});
-        out << "struct " << name << " {\n" << "    static constexpr uint32_t ID  = 0x" << std::hex << frame.can_id() << std::dec << ";\n"
-            << "    static constexpr uint8_t  DLC = " << (int)frame.dlc() << ";\n";
-        for (const auto& [sn, sig] : frame)
-            if (sig.mux_type() != CppCAN::CANSignal::MuxedSignal) out << "    " << cppType(sig) << " " << toIdentifier(sig.name()) << "{};\n";
-        out << "};\n\n";
+        int mux_sb = 0, mux_len = 0;
+        bool has_mux = false;
+        for (const auto& [sn, sig] : frame) {
+            if (sig.mux_type() == CppCAN::CANSignal::Multiplexer) {
+                mux_sb = sig.start_bit(); mux_len = sig.length(); has_mux = true; break;
+            }
+        }
+
+        if (has_mux) {
+            std::map<int, std::vector<std::pair<std::string, const CppCAN::CANSignal*>>> byMux;
+            for (const auto& [sn, sig] : frame)
+                if (sig.mux_type() == CppCAN::CANSignal::MuxedSignal) byMux[sig.mux_value()].push_back({sn, &sig});
+
+            using LayoutKey = std::vector<std::tuple<std::string, int, int, std::string>>;
+            std::map<LayoutKey, std::vector<int>> layouts;
+            for (auto& [mv, sigs] : byMux) {
+                LayoutKey key;
+                for (auto& s : sigs) {
+                    std::string stem; int port;
+                    if (splitPortSuffix(s.first, stem, port))
+                        key.push_back({stem, (int)s.second->start_bit(), (int)s.second->length(), cppType(*s.second)});
+                    else
+                        key.push_back({s.first, (int)s.second->start_bit(), (int)s.second->length(), cppType(*s.second)});
+                }
+                std::sort(key.begin(), key.end());
+                layouts[key].push_back(mv);
+            }
+
+            for (auto& [key, mvs] : layouts) {
+                if (key.empty()) continue;
+                std::sort(mvs.begin(), mvs.end());
+                std::vector<std::string> stems;
+                for (auto& t : key) stems.push_back(std::get<0>(t));
+                
+                std::string dev, cmd; 
+                parseDeviceCommand(stems[0], dev, cmd);
+                
+                auto& gm = api[{dev, cmd}];
+                gm.device = dev; gm.command = cmd;
+                if (gm.fields.empty()) {
+                    std::string cmd_full = dev + "_" + cmd;
+                    for (auto& [stem, sb, len, type] : key) {
+                        std::string name = stem;
+                        if (name == cmd_full) name = "value";
+                        else if (name.find(cmd_full + "_") == 0) name = name.substr(cmd_full.size() + 1);
+                        else if (name.find(dev + "_") == 0) name = name.substr(dev.size() + 1);
+                        
+                        if (name.empty()) name = "value";
+                        gm.fields.push_back({stem, toIdentifier(name), (unsigned)sb, (unsigned)len, type});
+                    }
+                }
+                int maxB = mux_sb + mux_len;
+                for (auto& f : gm.fields) maxB = std::max(maxB, (int)(f.start_bit + f.length));
+                gm.supports.push_back({pcb, (uint32_t)frame.can_id(), mvs[0], (int)mvs.size(), mux_sb, mux_len, (maxB + 7) / 8});
+            }
+        } else {
+            std::string dev, cmd; 
+            parseDeviceCommand(frame_name, dev, cmd);
+            auto& gm = api[{dev, cmd}];
+            gm.device = dev; gm.command = cmd;
+            if (gm.fields.empty()) {
+                std::string cmd_full = dev + "_" + cmd;
+                for (const auto& [sn, sig] : frame) {
+                    std::string name = sn;
+                    if (name == cmd_full) name = "value";
+                    else if (name.find(cmd_full + "_") == 0) name = name.substr(cmd_full.size() + 1);
+                    else if (name.find(dev + "_") == 0) name = name.substr(dev.size() + 1);
+                    
+                    if (name.empty()) name = "value";
+                    gm.fields.push_back({sn, toIdentifier(name), sig.start_bit(), sig.length(), cppType(sig)});
+                }
+            }
+            gm.supports.push_back({pcb, (uint32_t)frame.can_id(), 0, 1, 0, 0, (int)frame.dlc()});
+        }
     }
 
-    out << "enum class MessageType { ";
-    for (const auto& m : metas) out << m.name << ", ";
-    out << "Unknown };\n\ninline MessageType getMessageType(const CanFrame& frame) {\n    switch (frame.id) {\n";
-    for (const auto& m : metas) out << "        case 0x" << std::hex << m.id << std::dec << ": return MessageType::" << m.name << ";\n";
-    out << "        default: return MessageType::Unknown;\n    }\n}\n\n";
+    std::ostringstream out;
+    out << "// Generated from " << dbc_filename << " (Hash: " << dbc_hash << ") on " << date << "\n" << HEADER_BOILERPLATE;
+    out << "enum class Subsystem {\n";
+    for (const auto& n : pcbs) out << "    " << toCamelCase(n) << ",\n";
+    out << "    Unknown\n};\n\n";
 
-    for (const auto& [key, frame] : db) {
-        std::string name = toIdentifier(frame.name()), eb, dbb;
-        for (const auto& [sn, sig] : frame) {
-            if (sig.mux_type() == CppCAN::CANSignal::MuxedSignal) continue;
-            std::string f = toIdentifier(sig.name()), t = cppType(sig), sb = std::to_string(sig.start_bit()), l = std::to_string(sig.length());
-            eb += "    encode_field<" + sb + ", " + l + ">(frame.data.data(), " + (t == "bool" ? "static_cast<uint8_t>(msg." + f + ")" : "msg." + f) + ");\n";
-            dbb += "    msg." + f + " = decode_field<" + sb + ", " + l + ", " + (t == "bool" ? "uint8_t" : t) + ">(frame.data.data())" + (t == "bool" ? " != 0" : "") + ";\n";
-        }
-        out << render(R"(inline CanFrame encode(const {{n}}& msg) {
-    CanFrame frame; frame.id = {{n}}::ID; frame.dlc = {{n}}::DLC;
-{{eb}}    return frame;
-}
-template<> inline {{n}} decode<{{n}}>(const CanFrame& frame) {
-    {{n}} msg;
-{{db}}    return msg;
-}
-)", {{"n", name}, {"eb", eb}, {"db", dbb}});
+    std::map<std::string, std::vector<const GroupMeta*>> byDev;
+    for (auto& [k, g] : api) byDev[g.device].push_back(&g);
 
-        for (const auto& grp : findMuxGroups(frame)) {
-            std::string sname = name + "_" + grp.group_stem + "_t", fdef, ef, df;
-            for (const auto& f : grp.fields) {
-                std::string t = f.cpp_type, sb = std::to_string(f.start_bit), l = std::to_string(f.length);
-                fdef += "    " + t + " " + f.stem + "{};\n";
-                ef += "    encode_field<" + sb + ", " + l + ">(frame.data.data(), " + (t == "bool" ? "static_cast<uint8_t>(data." + f.stem + ")" : "data." + f.stem) + ");\n";
-                df += "    result." + f.stem + " = decode_field<" + sb + ", " + l + ", " + (t == "bool" ? "uint8_t" : t) + ">(frame.data.data())" + (t == "bool" ? " != 0" : "") + ";\n";
+    for (auto& [dev, gms] : byDev) {
+        out << "namespace " << toCamelCase(dev) << " {\n\n";
+        for (const auto* g : gms) {
+            std::string cName = toCamelCase(g->command);
+            out << "struct " << cName << " {\n";
+            for (const auto& f : g->fields) out << "    " << f.type << " " << f.api_name << "{};\n";
+            out << "};\n\n";
+
+            out << "inline CanFrame encode_" << toIdentifier(g->command) << "(Subsystem sub, uint8_t port, const " << cName << "& data) {\n"
+                << "    CanFrame f{};\n    switch(sub) {\n";
+            std::set<std::string> seenPcb;
+            for (const auto& s : g->supports) {
+                if (seenPcb.count(s.pcb)) continue;
+                seenPcb.insert(s.pcb);
+                out << "        case Subsystem::" << toCamelCase(s.pcb) << ":\n"
+                    << "            f.id = 0x" << std::hex << s.id << std::dec << "; f.dlc = " << s.dlc << ";\n";
+                if (s.mux_len > 0) out << "            encode_field<" << s.mux_start << "," << s.mux_len << ">(f.data.data(), 0x" << std::hex << s.base_mux << std::dec << " + port);\n";
+                out << "            break;\n";
             }
-            out << render(R"(struct {{sn}} {
-    uint8_t port_id{};
-{{fdef}}};
-inline CanFrame encode(const {{sn}}& data) {
-    CanFrame frame; frame.id = {{n}}::ID; frame.dlc = {{dlc}};
-    encode_field<{{msb}}, {{ml}}>(frame.data.data(), static_cast<uint8_t>(0x{{bm}} + data.port_id));
-{{ef}}    return frame;
-}
-template<> inline {{sn}} decode<{{sn}}>(const CanFrame& frame) {
-    {{sn}} result; result.port_id = decode_field<{{msb}}, {{ml}}, uint8_t>(frame.data.data()) - 0x{{bm}};
-{{df}}    return result;
-}
-)", {{"sn", sname}, {"fdef", fdef}, {"n", name}, {"dlc", std::to_string(grp.dlc)}, {"msb", std::to_string(grp.mux_start_bit)}, {"ml", std::to_string(grp.mux_length)}, {"bm", (std::ostringstream() << std::hex << grp.base_mux).str()}, {"ef", ef}, {"df", df}});
+            out << "        default: break;\n    }\n";
+            for (const auto& f : g->fields) out << "    encode_field<" << f.start_bit << "," << f.length << ">(f.data.data(), " << (f.type == "bool" ? "static_cast<uint8_t>(data." + f.api_name + ")" : "data." + f.api_name) << ");\n";
+            out << "    return f;\n}\n\n";
+
+            out << "struct " << cName << "Result { uint8_t port; " << cName << " data; };\n";
+            out << "inline std::optional<" << cName << "Result> decode_" << toIdentifier(g->command) << "(const CanFrame& f) {\n";
+            std::set<std::tuple<uint32_t, int, int>> seenIdMux;
+            for (const auto& s : g->supports) {
+                if (seenIdMux.count({s.id, s.base_mux, s.num_ports})) continue;
+                seenIdMux.insert({s.id, s.base_mux, s.num_ports});
+                out << "    if (f.id == 0x" << std::hex << s.id << std::dec;
+                if (s.mux_len > 0) out << " && decode_field<" << s.mux_start << "," << s.mux_len << ",uint8_t>(f.data.data()) >= 0x" << std::hex << s.base_mux << std::dec << " && decode_field<" << s.mux_start << "," << s.mux_len << ",uint8_t>(f.data.data()) < 0x" << std::hex << (s.base_mux + s.num_ports) << std::dec;
+                out << ") {\n        return " << cName << "Result{" << (s.mux_len > 0 ? "static_cast<uint8_t>(decode_field<" + std::to_string(s.mux_start) + "," + std::to_string(s.mux_len) + ",uint8_t>(f.data.data()) - 0x" + (std::ostringstream() << std::hex << s.base_mux).str() + ")" : "0") << ", " << cName << "{";
+                for (size_t i = 0; i < g->fields.size(); ++i) out << "decode_field<" << g->fields[i].start_bit << "," << g->fields[i].length << "," << (g->fields[i].type == "bool" ? "uint8_t" : g->fields[i].type) << ">(f.data.data())" << (g->fields[i].type == "bool" ? "!=0" : "") << (i == g->fields.size() - 1 ? "" : ", ");
+                out << "}};\n    }\n";
+            }
+            out << "    return std::nullopt;\n}\n\n";
         }
+        out << "} // namespace " << toCamelCase(dev) << "\n\n";
     }
     out << "} // namespace Protocol\n";
     return out.str();
