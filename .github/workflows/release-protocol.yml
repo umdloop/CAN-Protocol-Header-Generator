@@ -26,8 +26,12 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../dbc-can
-          make dbc-can
+          cmake ..
+          make dbc-can protocol-test
+
+      - name: Run Protocol Tests
+        run: |
+          ./build/protocol-test
 
       - name: Generate Protocol Header
         run: |
